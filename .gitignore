@@ -1,0 +1,10 @@
+node_modules
+.vercel
+*.png
+*.jpg
+*.glb
+*.hdr
+*.blend
+*.blen1
+*.ttf
+*.wav
