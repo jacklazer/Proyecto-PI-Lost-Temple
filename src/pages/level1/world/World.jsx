@@ -282,7 +282,7 @@ export default function World(props) {
                 files='/assets/other/hdris/goegap_4k.hdr'
                 background={true}
                 ground={{height: 20, scale: 512, radius: 400}} /> */}
-                <Sky
+                {/* <Sky
                 sunPosition={[0, 0, -1]}
                 inclination={0.2}
                 azimuth={180}
@@ -311,7 +311,7 @@ export default function World(props) {
                 depth={50}
                 count={1000}
                 factor={2}
-                saturation={0} />
+                saturation={0} /> */}
             </group>
         </group>
     )

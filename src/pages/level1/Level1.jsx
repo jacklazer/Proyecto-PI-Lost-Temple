@@ -112,7 +112,7 @@ const Level1 = () => {
             <Canvas 
             camera={
                 {
-                    position: [0, 5, -5],
+                    position: [100, 100, 100],
                     // target: [0, 50, 5]
                     // rotation: [-1, 1, 1]
                 }
@@ -137,9 +137,9 @@ const Level1 = () => {
                         <World />
 
                         <Hero />
-                        <RockEnemy />
+                        {/* <RockEnemy /> */}
 
-                        <Tesseract />
+                        {/* <Tesseract /> */}
                     </Physics>
 
                     <WellcomeText position={[0, 50, 0]} />
