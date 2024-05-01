@@ -1,6 +1,6 @@
 import { OrbitControls, useKeyboardControls } from "@react-three/drei";
 import { useAvatar } from "../../../context/AvatarContext";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Quaternion, Vector3 } from "three";
 
@@ -11,9 +11,11 @@ export default function Controls() {
     let walkDirection = new Vector3();
     let rotateAngle = new Vector3(0, 1, 0);
     let rotateQuaternion = new Quaternion();
-    const velocity = 3;
+    const velocity = 5;
     let cameraTarget = new Vector3();
-    const desiredDistance = 20;
+    const desiredDistance = 30;
+    const [runSound] = useState(new Audio('/assets/sounds/run.wav'))
+    const [play, setPlay] = useState(false)
 
     const getDirectionOffset = (forward, backward, leftward, rightward) => {
         if (forward && leftward) return Math.PI/4;
@@ -27,18 +29,20 @@ export default function Controls() {
         return 0;
     }
 
-    // useEffect(()=>{
-    //     return sub(
-    //         (state) => state.forward,
-    //         (pressed) => {
-    //             console.log('forward', pressed)
-    //         }
-    //     )
-    // }, [])
+    useEffect(()=>{
+        return sub(
+            (state) => state.forward,
+            (pressed) => {
+                console.log('forward', pressed)
+            }
+        )
+    }, [])
 
     useFrame((state, delta)=>{
         const { forward, backward, leftward, rightward } = get()
         if(forward || backward || leftward || rightward){
+            setPlay(true)
+            
             const directionOffset = getDirectionOffset(forward, backward, leftward, rightward)
             const currentTranslation = avatar.body.translation()
 
@@ -52,6 +56,7 @@ export default function Controls() {
             )
 
             avatar.ref.quaternion.rotateTowards(rotateQuaternion, 0.2)
+            console.log("Quaternion", avatar.ref.quaternion)
             state.camera.getWorldDirection(walkDirection)
             walkDirection.y = 0
             walkDirection.normalize()
@@ -95,8 +100,6 @@ export default function Controls() {
             const direction = cameraPosition.sub(avatarPosition).normalize()
             const newCameraPosition = avatarPosition.add(direction.multiplyScalar(desiredDistance))
             state.camera.position.copy(newCameraPosition)
-            // const xd = new Vector3(newPosition.x, newPosition.y + 8, newPosition.z)
-            // state.camera.lookAt(xd)
 
             // if(avatar.body && avatar.ref){ 
             //     console.log('moving')
@@ -111,79 +114,44 @@ export default function Controls() {
             //     controlsRef.current.target.z = avatar.body.translation().z
             // } 
         } else {
+            setPlay(false)
             // avatar.body?.sleep()
         }
         const pressed = get().back
     })
 
-    console.log("Avatar", avatar)
+    useEffect(() => {
+        const unsubscribe = sub(
+          (state) => state.forward || state.backward || state.leftward || state.rightward,
+          (pressed) => {
+            setAvatar({ ...avatar, animation: pressed ? "Running" : "Idle" });
+            // socket.emit("change-animation", { animation: pressed ? "Running" : "Idle" })
+          }
+        );
+        return () => unsubscribe();
+      }, [avatar, setAvatar, sub, get]);
+
+
+    useEffect(()=>{
+        if (play){
+            runSound.currentTime = 0;
+            runSound.volume = 0.5
+            runSound.play()
+        } else {
+            runSound.pause()
+        }
+    }, [play])
+    
     return (
         <OrbitControls 
         ref={controlsRef}
         target={[0, 0, 0]}
         />
-        // <OrbitControls 
-        // ref={controlsRef}
-        // />
+
+        // // <OrbitControls 
+        // // ref={controlsRef}
+        // // />
+
+        // null
     )
 }
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////
-
-// // import { OrbitControls, useKeyboardControls } from "@react-three/drei";
-// // import { useAvatar } from "../../../context/AvatarContext";
-// // import { useEffect, useRef } from "react";
-// // import { useFrame } from "@react-three/fiber";
-// // import { Quaternion, Vector3 } from "three";
-
-// import { useKeyboardControls } from "@react-three/drei";
-// import { useAvatar } from "../../../context/AvatarContext";
-// import { useEffect, useState } from "react";
-// import { useFrame } from "@react-three/fiber";
-// import { socket } from "../../../socket/socket-manager";
-
-// export default function Controls() {
-//   const { avatar, setAvatar } = useAvatar();
-//   const [sub, get] = useKeyboardControls()
-// //   const [runSound] = useState(new Audio("/assets/sounds/run.wav"))
-//   const [play, setPlay] = useState(false)
-
-
-// //   useEffect(() => {
-// //     const unsubscribe = sub(
-// //       (state) => state.forward || state.backward || state.leftward || state.rightward,
-// //       (pressed) => {
-// //         setAvatar({ ...avatar, animation: pressed ? "Running" : "Idle" });
-// //         socket.emit("change-animation", { animation: pressed ? "Running" : "Idle" })
-// //       }
-// //     );
-// //     return () => unsubscribe();
-// //   }, [avatar, setAvatar, sub, get]);
-
-// //   useEffect(() => {
-// //     if (play) {
-// //       runSound.currentTime = 0;
-// //       runSound.volume = Math.random()
-// //       runSound.play()
-// //     } else {
-// //       runSound.pause()
-// //     }
-// //   }, [play])
-
-//   useFrame(() => {
-//     const { forward, backward, leftward, rightward } = get()
-//     if (forward || backward || leftward || rightward) {
-//       setPlay(true)
-//       socket.emit("moving-player", {
-//         position: avatar.rigidBodyAvatarRef?.translation(),
-//         rotation: avatar.rigidBodyAvatarRef?.rotation()
-//       })
-//     } else {
-//       setPlay(false)
-//     }
-//     const pressed = get().back
-//   })
-// }

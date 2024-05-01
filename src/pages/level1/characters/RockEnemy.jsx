@@ -14,8 +14,11 @@ export default function RockEnemy(props) {
             <RigidBody
             type='dynamic'
             colliders='cuboid'
-            friction={0}>
+            friction={0}
+            scale={1.5}
+            position={[0, 0.3, -15]}>
                 <mesh
+                position={[0, 0.3, -15]}
                 castShadow
                 receiveShadow
                 geometry={nodes.Enemy.geometry}
