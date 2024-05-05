@@ -1,6 +1,6 @@
 import { KeyboardControls, OrbitControls, Shape } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import World from "./world/World";
 import Lights from "./ligthts/Lights";
 import Tesseract from "./characters/Tesseract";
@@ -12,54 +12,49 @@ import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
 import Controls from "./controls/Controls";
 import useMovements from "../../utils/key-movements";
 
-import Ecctrl, { EcctrlAnimation } from "ecctrl";
+import { socket } from "../../socket/socket-manager";
 
 const Level1 = () => {
     const map = useMovements();
 
+    useEffect(()=>{
+        socket.emit('player-connected')
+    }, [])
+
     return (
-        <KeyboardControls map={map}>
-            <Canvas 
-            camera={
-                {
-                    position: [100, 100, 100],
-                    // target: [0, 50, 5]
-                    // rotation: [-1, 1, 1]
-                }
-            } 
-            shadows={true}>
-                <Suspense fallback={null}>
+        <Suspense fallback={null}>
+            <KeyboardControls map={map}>
+                <Canvas 
+                // camera={
+                //     {
+                //         position: [100, 100, 100],
+                //         // target: [0, 50, 5]
+                //         // rotation: [-1, 1, 1]
+                //     }
+                // } 
+                shadows={true}>
                     <Lights />
 
                     <Physics
-                    debug={true}
-                    gravity={[0, -9.8, 0]}>
+                    debug={true}>
                         <World />
 
-                        {/* <Ecctrl 
-                        animated 
-                        scale={8}
-                        position={[0, 8, 0]}
-                        camInitDis = {20}
-                        camMinDis = {20}
-                        camMaxDis = {20}
-                        friction={0.5}> */}
-                            <Hero />
-                        {/* </Ecctrl> */}
+                        <Hero />
                         
-                        {/* <RockEnemy /> */}
+                        <RockEnemy />
 
                         {/* <Tesseract /> */}
                     </Physics>
 
                     <WellcomeText position={[0, 50, 0]} />
 
-                </Suspense>
+                    <Controls />
 
-                {/* <OrbitControls target={[0, 1, -2]} /> */}
-                <Controls />
-            </Canvas>
-        </KeyboardControls>
+                    {/* <OrbitControls target={[0, 1, -2]} /> */}
+                </Canvas>
+            </KeyboardControls>
+        </Suspense>
+
     )
 
 }

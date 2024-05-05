@@ -3,6 +3,7 @@ import { useAvatar } from "../../../context/AvatarContext";
 import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Quaternion, Vector3 } from "three";
+import { socket } from "../../../socket/socket-manager";
 
 export default function Controls() {
     const {avatar, setAvatar} = useAvatar();
@@ -42,77 +43,99 @@ export default function Controls() {
         const { forward, backward, leftward, rightward } = get()
         if(forward || backward || leftward || rightward){
             setPlay(true)
+
+            socket.emit('moving-player', {
+                position: avatar.avatarBodyRef?.translation(),
+                rotation: avatar.avatarBodyRef?.rotation()
+            })
+
+            // // socket.emit('moving-player', {
+            // //     position: { x: 0, y: 0, z: 0 },
+            // //     rotation: { x: 0, y: 0, z: 0, w: 1}
+            // // })
+
+            // // socket.emit("moving-player", {
+            // //   position: avatar.rigidBodyAvatarRef?.translation(),
+            // //   rotation: avatar.rigidBodyAvatarRef?.rotation()
+            // // })
             
-            const directionOffset = getDirectionOffset(forward, backward, leftward, rightward)
-            const currentTranslation = avatar.body.translation()
 
-            const angleYCameraDirection = Math.atan2(
-                state.camera.position.x - currentTranslation.x,
-                state.camera.position.z - currentTranslation.z
-            )
-            rotateQuaternion.setFromAxisAngle(
-                rotateAngle,
-                angleYCameraDirection + Math.PI + directionOffset
-            )
 
-            avatar.ref.quaternion.rotateTowards(rotateQuaternion, 0.2)
-            console.log("Quaternion", avatar.ref.quaternion)
-            state.camera.getWorldDirection(walkDirection)
-            walkDirection.y = 0
-            walkDirection.normalize()
-            walkDirection.applyAxisAngle(rotateAngle, directionOffset);
 
-            const moveX = walkDirection.x * velocity * 0.1 //delta
-            const moveZ = walkDirection.z * velocity * 0.1 //delta
+            // const directionOffset = getDirectionOffset(forward, backward, leftward, rightward)
+            // const currentTranslation = avatar.body.translation()
 
-            const newPosition = new Vector3(
-                currentTranslation.x + moveX,
-                currentTranslation.y,
-                currentTranslation.z + moveZ,
-            );
+            // const angleYCameraDirection = Math.atan2(
+            //     state.camera.position.x - currentTranslation.x,
+            //     state.camera.position.z - currentTranslation.z
+            // )
+            // rotateQuaternion.setFromAxisAngle(
+            //     rotateAngle,
+            //     angleYCameraDirection + Math.PI + directionOffset
+            // )
 
-            avatar.body.setTranslation({
-                x: newPosition.x,
-                y: newPosition.y,
-                z: newPosition.z,
-            }, true)
+            // avatar.ref.quaternion.rotateTowards(rotateQuaternion, 0.2)
+            // console.log("Quaternion", avatar.ref.quaternion)
+            // state.camera.getWorldDirection(walkDirection)
+            // walkDirection.y = 0
+            // walkDirection.normalize()
+            // walkDirection.applyAxisAngle(rotateAngle, directionOffset);
 
-            avatar.body.setRotation(new Quaternion({
-                x: 0,
-                y: avatar.ref.quaternion.y,
-                z: 0,
-                w: 1
-            }).normalize())
+            // const moveX = walkDirection.x * velocity * 0.1 //delta
+            // const moveZ = walkDirection.z * velocity * 0.1 //delta
 
-            state.camera.position.add(new Vector3(moveX, 0, moveZ))
+            // const newPosition = new Vector3(
+            //     currentTranslation.x + moveX,
+            //     currentTranslation.y,
+            //     currentTranslation.z + moveZ,
+            // );
 
-            cameraTarget.set(
-                newPosition.x,
-                newPosition.y + 8,
-                currentTranslation.z + moveZ,
-            )
+            // avatar.body.setTranslation({
+            //     x: newPosition.x,
+            //     y: newPosition.y,
+            //     z: newPosition.z,
+            // }, true)
 
-            // console.log(cameraTarget)
+            // avatar.body.setRotation(new Quaternion({
+            //     x: 0,
+            //     y: avatar.ref.quaternion.y,
+            //     z: 0,
+            //     w: 1
+            // }).normalize())
 
-            controlsRef.current.target = cameraTarget
-            const avatarPosition = new Vector3(newPosition.x, newPosition.y, newPosition.z)
-            const cameraPosition = state.camera.position
-            const direction = cameraPosition.sub(avatarPosition).normalize()
-            const newCameraPosition = avatarPosition.add(direction.multiplyScalar(desiredDistance))
-            state.camera.position.copy(newCameraPosition)
+            // state.camera.position.add(new Vector3(moveX, 0, moveZ))
 
-            // if(avatar.body && avatar.ref){ 
-            //     console.log('moving')
-            //     avatar.body.applyImpulse({
-            //         x: 0, y: 0, z: 10
-            //     }, true)
-            //     state.camera.position.x = avatar.body.translation().x // - 5
-            //     controlsRef.current.target.x = avatar.body.translation().x
-            //     state.camera.position.y = avatar.body.translation().y + 5 + 3 // + 50 + 3
-            //     controlsRef.current.target.y = avatar.body.translation().y + 5 + 3 // + 50 + 3
-            //     state.camera.position.z = avatar.body.translation().z - 10
-            //     controlsRef.current.target.z = avatar.body.translation().z
-            // } 
+            // cameraTarget.set(
+            //     newPosition.x,
+            //     newPosition.y + 8,
+            //     currentTranslation.z + moveZ,
+            // )
+
+            // // console.log(cameraTarget)
+
+            // controlsRef.current.target = cameraTarget
+            // const avatarPosition = new Vector3(newPosition.x, newPosition.y, newPosition.z)
+            // const cameraPosition = state.camera.position
+            // const direction = cameraPosition.sub(avatarPosition).normalize()
+            // const newCameraPosition = avatarPosition.add(direction.multiplyScalar(desiredDistance))
+            // state.camera.position.copy(newCameraPosition)
+
+
+
+
+            // // if(avatar.body && avatar.ref){ 
+            // //     console.log('moving')
+            // //     avatar.body.applyImpulse({
+            // //         x: 0, y: 0, z: 10
+            // //     }, true)
+            // //     state.camera.position.x = avatar.body.translation().x // - 5
+            // //     controlsRef.current.target.x = avatar.body.translation().x
+            // //     state.camera.position.y = avatar.body.translation().y + 5 + 3 // + 50 + 3
+            // //     controlsRef.current.target.y = avatar.body.translation().y + 5 + 3 // + 50 + 3
+            // //     state.camera.position.z = avatar.body.translation().z - 10
+            // //     controlsRef.current.target.z = avatar.body.translation().z
+            // // }
+
         } else {
             setPlay(false)
             // avatar.body?.sleep()
@@ -143,15 +166,15 @@ export default function Controls() {
     }, [play])
     
     return (
-        <OrbitControls 
-        ref={controlsRef}
-        target={[0, 0, 0]}
-        />
+        // <OrbitControls 
+        // ref={controlsRef}
+        // target={[0, 0, 0]}
+        // />
 
         // // <OrbitControls 
         // // ref={controlsRef}
         // // />
 
-        // null
+        null
     )
 }

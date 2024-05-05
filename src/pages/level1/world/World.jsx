@@ -30,7 +30,7 @@ export default function World(props) {
     return (
         <group {...props} dispose={null}>
             <group>
-                {/* <RigidBody
+                <RigidBody
                 type="fixed" 
                 colliders="trimesh">
                     <mesh
@@ -38,9 +38,9 @@ export default function World(props) {
                     receiveShadow
                     geometry={nodes.WallsL1.geometry}
                     onClick={(e) => e.stopPropagation()}>
-                        <meshStandardMaterial {...propsTextures} />
+                        {/* <meshStandardMaterial {...propsTextures} /> */}
                     </mesh>
-                </RigidBody> */}
+                </RigidBody>
                 <RigidBody 
                 type="fixed" 
                 colliders="trimesh">
@@ -58,8 +58,8 @@ export default function World(props) {
                 {/* <Environment
                 files='/assets/other/hdris/goegap_4k.hdr'
                 background={true}
-                ground={{height: 20, scale: 512, radius: 400}} />
-                <Sky
+                ground={{height: 20, scale: 512, radius: 400}} /> */}
+                {/* <Sky
                 sunPosition={[0, 0, -1]}
                 inclination={0.2}
                 azimuth={180}
@@ -68,22 +68,22 @@ export default function World(props) {
                 mieDirectionalG={0.07}
                 rayleigh={3}
                 turbidity={10}
-                exposure={0.5} />
-                <Sparkles
+                exposure={0.5} /> */}
+                {/* <Sparkles
                 color='white'
                 count={100}
                 size={10}
                 fade={false}
                 speed={2}
-                scale={20} />
-                <Cloud
+                scale={20} /> */}
+                {/* <Cloud
                 opacity={0.5}
                 speed={0.4}
                 width={50}
                 depth={5}
                 segments={20}
-                position-y={20} />
-                <Stars
+                position-y={20} /> */}
+                {/* <Stars
                 radius={100}
                 depth={50}
                 count={1000}
