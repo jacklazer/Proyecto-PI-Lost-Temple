@@ -1,6 +1,6 @@
 import { KeyboardControls, OrbitControls, Shape } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 import World from "./world/World";
 import Lights from "./ligthts/Lights";
 import Tesseract from "./characters/Tesseract";
@@ -13,7 +13,10 @@ import Controls from "./controls/Controls";
 import useMovements from "../../utils/key-movements";
 
 import { socket } from "../../socket/socket-manager";
-import Collectables from "./collectable/collectable";
+// import Collectables from "./collectable/collectable";
+// import Collectable from "./collectable/coin";
+import Collectable from "./collectable/Coin";
+import { useAvatar } from "../../context/AvatarContext";
 
 const Level1 = () => {
     const map = useMovements();
@@ -21,6 +24,16 @@ const Level1 = () => {
     useEffect(()=>{
         socket.emit('player-connected')
     }, [])
+
+    const [collectedCount, setCollectedCount] = useState(0);
+
+    const handleCollect = () => {
+      // Incrementar el contador de objetos recolectados
+      setCollectedCount(prevCount => prevCount + 1);
+      console.log("collectedCount>", collectedCount)
+    };
+
+    const {avatar, setAvatar} = useAvatar();
 
     return (
         <Suspense fallback={null}>
@@ -37,18 +50,20 @@ const Level1 = () => {
                     <Lights />
 
                     <Physics
-                    debug={true}
+                    // debug={true}
                     >
                         <World />
 
                         <Hero />
                         
-                        <RockEnemy position={[0, 0.3, 0]} />
                         {/* <RockEnemy position={[0, 0.3, 0]} /> */}
 
                         {/* <Tesseract position={[-15, 0.5, -15]} />
                         <Tesseract position={[15, 0.5, 15]} /> */}
-                        <Collectables />
+                        {/* <Collectables /> */}
+                        <Collectable position={[15, 0.5, 15]} onCollect={handleCollect} positionHero={avatar.avatarBodyRef?.translation()}/>
+                        <Collectable position={[17, 0.5, 15]} onCollect={handleCollect} positionHero={avatar.avatarBodyRef?.translation()}/>
+                        <Collectable position={[19, 0.5, 15]} onCollect={handleCollect} positionHero={avatar.avatarBodyRef?.translation()}/>
                     </Physics>
 
                     <WellcomeText position={[0, 50, 0]} />
