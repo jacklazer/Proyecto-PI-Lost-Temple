@@ -1,6 +1,7 @@
 // [Collectables.jsx]
 import React, { useState, useEffect } from 'react';
 import Tesseract from './Tesseract';
+import { useFrame } from '@react-three/fiber';
 
 export default function Collectables() {
   const [objectStates, setObjectStates] = useState([]);
@@ -13,6 +14,8 @@ export default function Collectables() {
     //   { id: 3, name: 'Tesseract 4', isTaken: false, isCollected: false }
     ];
     setObjectStates(initialObjectStates);
+
+    // console.log("initialObjectStates>", initialObjectStates)
   }, []);
 
   const updateObjectState = (id, newState) => {
@@ -27,15 +30,23 @@ export default function Collectables() {
     console.log("objectStates ha cambiado a", objectStates);
   }, [objectStates]);
 
+  useFrame(() => {console.log("initialObjectStates>", objectStates)})
+
   return (
     <>
       <Tesseract
-        position={[15, 0.5, 15]}
+        // Esto es por si se opta por el toro
+        position={[15, 1.15, 15]}
+        // Esto es por si se opta por el cubo
+        // position={[15, 1, 15]}
         onUpdateState={(newState) => updateObjectState(0, newState)}
       />
 
       <Tesseract
-        position={[-15, 0.5, -15]}
+        // Esto es por si se opta por el toro
+        position={[-15, 1.15, -15]}
+        // Esto es por si se opta por el cubo
+        // position={[-15, 1, -15]}
         onUpdateState={(newState) => updateObjectState(1, newState)}
       />
 

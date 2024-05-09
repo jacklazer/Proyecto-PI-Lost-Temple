@@ -116,29 +116,6 @@ export default function RockEnemy(
         // // console.log("x:", redManQuadBodyRef.current?.translation().x, "- z", redManQuadBodyRef.current?.translation().z)
         // // redManQuadRef.current.position.x = 49;
         // // redManQuadRef.current.position.z = 49;
-
-
-
-
-
-
-
-
-
-
-
-        // let moveZ = currentPosition?.z
-        // if (currentPosition?.z > 70) {//+ 13 + 4) {
-        //     uno = -1
-        // }
-        // else if (currentPosition?.z < -70){ //+ 13 + 4) {
-        //     uno = 1
-        // }
-        // redManQuadBodyRef.current?.setTranslation({
-        //     x:  redManQuadBodyRef.current?.translation().x,
-        //     y:  redManQuadBodyRef.current?.translation().y,
-        //     z:  moveZ + (uno*0.1) //redManQuadBodyRef.current?.translation().z
-        // }, true)
     })
 
     return (

@@ -21,7 +21,6 @@ export default function Tesseract(
     // }, [avatarBodyRef.current, avatarRef.current])
 
 
-    let uno = true
     const boxRef = useRef();
     const impulsoBoxRef = useRef();
 
@@ -103,8 +102,13 @@ export default function Tesseract(
                 position={position}
                 colliders='cuboid'
                 friction={0}
-                sensor      
+                sensor
                 onIntersectionEnter={handleIntersectionEnter}
+
+                // Esto es si se opta por el toroide
+                scale={0.12}
+                // Esto es si se opta por el toroide
+                // scale={0.3}
                 >
                     <mesh
                     ref={boxRef}
@@ -112,8 +116,9 @@ export default function Tesseract(
                     position={position}
                     castShadow={true}
                     receiveShadow={true}>
-                        <boxGeometry args={[0.3, 0.3, 0.3]} />
-                        <meshStandardMaterial color="blue" />
+                        <torusGeometry/>
+                        {/* <boxGeometry /> */}
+                        <meshStandardMaterial color="#FFD700" />
                     </mesh>
                 </RigidBody>
             // </RigidBody>
