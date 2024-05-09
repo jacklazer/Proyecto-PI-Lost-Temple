@@ -13,7 +13,7 @@ export default function useMovements(){
         run: "run"
     }
 
-    console.log(MOVEMENTS.forward);
+    // console.log(MOVEMENTS.forward);
 
     const map = useMemo(()=>{
         return [

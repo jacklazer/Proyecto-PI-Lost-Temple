@@ -13,6 +13,7 @@ import Controls from "./controls/Controls";
 import useMovements from "../../utils/key-movements";
 
 import { socket } from "../../socket/socket-manager";
+import Collectables from "./collectable/collectable";
 
 const Level1 = () => {
     const map = useMovements();
@@ -36,14 +37,18 @@ const Level1 = () => {
                     <Lights />
 
                     <Physics
-                    debug={true}>
+                    debug={true}
+                    >
                         <World />
 
                         <Hero />
                         
-                        <RockEnemy />
+                        <RockEnemy position={[0, 0.3, 0]} />
+                        {/* <RockEnemy position={[0, 0.3, 0]} /> */}
 
-                        {/* <Tesseract /> */}
+                        {/* <Tesseract position={[-15, 0.5, -15]} />
+                        <Tesseract position={[15, 0.5, 15]} /> */}
+                        <Collectables />
                     </Physics>
 
                     <WellcomeText position={[0, 50, 0]} />

@@ -1,10 +1,11 @@
 import { RigidBody } from "@react-three/rapier";
 import { useFrame } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAvatar } from "../../../context/AvatarContext";
-import useMovements from "../../../utils/key-movements";
 
-export default function Tesseract() {
+export default function Tesseract(
+    {position}
+) {
 
     // const avatarRef = useRef();
     // const avatarBodyRef = useRef();
@@ -34,23 +35,54 @@ export default function Tesseract() {
         impulsoBoxRef.current.applyImpulse({x: 100, y: 100, z: 100}, true);
         console.log(impulsoBoxRef.current);
     }
+    const [isTaken, setIsTaken] = useState(false);
+    const [isCollected, setIsCollected] = useState(false);
+
+    const {avatar, setAvatar} = useAvatar();
+
+    // let positionB = position
+
+    // console.log("position", position)
+    // console.log("positionB", positionB)
+
+    // useFrame((state, delta) => {
+
+    //     const currentPosition = boxRef.current?.translation()
+
+    //     console.log("currentPosition", currentPosition)
+
+    //     // if (avatar.avatarBodyRef?.translation().x > currentPosition?.x - 4 - 4) {
+    //     //     moveX += delta * speed;
+    //     //     moveR += delta * speed
+    //     // }
+
+    // }, true)
 
     return (
-        <RigidBody
-        type='dynamic'
-        ref={impulsoBoxRef}
-        position={[0, 50, 0]}
-        colliders='cuboid'
-        friction={0}>
-            <mesh
-            ref={boxRef}
-            onClick={impulso}
-            position={[0, 50, 0]}
-            castShadow={true}
-            receiveShadow={true}>
-                <boxGeometry args={[2, 2, 2]} />
-                <meshStandardMaterial color="blue" />
-            </mesh>
-        </RigidBody>
+        !isTaken && !isCollected && (
+            // <RigidBody
+            // type='dynamic'
+            // position={[0, 10, 0]}
+            // colliders='cuboid'
+            // scale={2}
+            // friction={0}>
+                <RigidBody
+                type='fixed'
+                ref={impulsoBoxRef}
+                position={position}
+                colliders='cuboid'
+                friction={0}>
+                    <mesh
+                    ref={boxRef}
+                    // onClick={impulso}
+                    position={position}
+                    castShadow={true}
+                    receiveShadow={true}>
+                        <boxGeometry args={[0.3, 0.3, 0.3]} />
+                        <meshStandardMaterial color="blue" />
+                    </mesh>
+                </RigidBody>
+            // </RigidBody>
+        )
     )
 }
