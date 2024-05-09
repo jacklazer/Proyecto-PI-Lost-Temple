@@ -34,7 +34,7 @@ export default function Controls() {
         return sub(
             (state) => state.forward,
             (pressed) => {
-                console.log('forward', pressed)
+                // console.log('forward', pressed)
             }
         )
     }, [])
@@ -49,6 +49,13 @@ export default function Controls() {
                 rotation: avatar.avatarBodyRef?.rotation()
             })
 
+            // console.log(avatar.avatarBodyRef?.rotation().y)
+
+            // socket.emit('moving-player-for-enemy', {
+            //     position: avatar.avatarBodyRef?.translation(),
+            //     rotation: avatar.avatarBodyRef?.rotation()
+            // })
+            
             // // socket.emit('moving-player', {
             // //     position: { x: 0, y: 0, z: 0 },
             // //     rotation: { x: 0, y: 0, z: 0, w: 1}

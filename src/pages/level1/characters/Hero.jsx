@@ -285,7 +285,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Helper, useAnimations, useGLTF, useHelper } from '@react-three/drei'
 import { CapsuleCollider, CuboidCollider, RigidBody } from '@react-three/rapier';
 import { useEffect, useRef } from "react";
@@ -310,7 +310,7 @@ export default function Hero(props) {
 
     const {actions} = useAnimations(animations, avatarRef)
 
-    console.log(actions)
+    // console.log(actions)
 
     useEffect(()=>{
         setAvatar({
