@@ -56,14 +56,13 @@ const Level1 = () => {
 
                         <Hero />
                         
-                        {/* <RockEnemy position={[0, 0.3, 0]} /> */}
+                        <RockEnemy position={[0, 0.3, 0]} />
 
-                        {/* <Tesseract position={[-15, 0.5, -15]} />
-                        <Tesseract position={[15, 0.5, 15]} /> */}
-                        {/* <Collectables /> */}
-                        <Collectable position={[15, 0.5, 15]} onCollect={handleCollect} positionHero={avatar.avatarBodyRef?.translation()}/>
-                        <Collectable position={[17, 0.5, 15]} onCollect={handleCollect} positionHero={avatar.avatarBodyRef?.translation()}/>
-                        <Collectable position={[19, 0.5, 15]} onCollect={handleCollect} positionHero={avatar.avatarBodyRef?.translation()}/>
+                        {/* <Tesseract position={[0, 10, 0]} /> */}
+
+                        <Collectable position={[15, 1, 15]} onCollect={handleCollect} />
+                        <Collectable position={[17, 1, 15]} onCollect={handleCollect} />
+                        <Collectable position={[19, 1, 15]} onCollect={handleCollect} />
                     </Physics>
 
                     <WellcomeText position={[0, 50, 0]} />

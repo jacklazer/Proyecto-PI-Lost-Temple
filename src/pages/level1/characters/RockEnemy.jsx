@@ -1,13 +1,10 @@
 import React, { useState } from 'react'
-import { useGLTF } from '@react-three/drei'
-import { RigidBody, CuboidCollider } from '@react-three/rapier';
-import { useEffect, useRef } from "react";
+import { Cloud, useGLTF } from '@react-three/drei'
+import { RigidBody } from '@react-three/rapier';
+import { useRef } from "react";
 import { useAvatar } from "../../../context/AvatarContext";
 // import useMovements from "../../../utils/key-movements";
-import { useFrame } from "@react-three/fiber"
-import { socket } from '../../../socket/socket-manager';
-import { Quaternion, Vector3 } from 'three';
-
+import { useFrame } from "@react-three/fiber";
 
 
 
@@ -16,142 +13,140 @@ export default function RockEnemy(
     {position}
 
 ) {
-    const redManQuadRef = useRef(null)
-    const redManQuadBodyRef = useRef(null)
+    const { nodes, materials } = useGLTF('assets/models/rockenemy/RockEnemy.glb');
 
-    const { nodes, materials } = useGLTF('assets/models/rockenemy/RockEnemy.glb')
+    const RockEnemydRef = useRef(null);
+    const RockEnemydRefBodyRef = useRef(null);
+    const enemyCloud = useRef(null);
+
+
+    // // // // // let rojizo = null
+    // // // // // let originalTexture = materials['Scene_-_Root.003'].map;
+    // // // // // let materialModificado = new THREE.MeshStandardMaterial({
+    // // // // //     map: originalTexture, // Utilizar la textura original
+    // // // // //     color: rojizo // null // '0xff0000', // Color rojizo
+    // // // // // });
+    // // // // // let wasAtacked = false;
 
     const {avatar, setAvatar} = useAvatar();
-
-    // let rotateQuaternion = new Quaternion();
-    // let rotateAngle = new Vector3(0, 1, 0);
-    const speed = 4
-
+    const rokcInitialEnemySpeed = 4
+    
     useFrame((state, delta) => {
 
-        const currentPosition = redManQuadBodyRef.current?.translation()
+        const currentPosition = RockEnemydRefBodyRef.current?.translation();
 
-        let moveX = currentPosition?.x
-        let moveZ = currentPosition?.z
-        let moveR = 0
+        let slow = 0;
+        if (enemyCloud.current.visible){
+            slow = 3;
+        }
+        const rokcCurrentEnemySpeed = rokcInitialEnemySpeed - slow;
 
-        // if (avatar.avatarBodyRef?.translation().x == currentPosition?.x) {
-        //     moveX = moveX;
-        // }
-        // else
+        let moveX = currentPosition?.x;
+        let moveZ = currentPosition?.z;
+        
         if (avatar.avatarBodyRef?.translation().x > currentPosition?.x ){ //- 4 - 4) {
-            moveX += delta * speed;
-            moveR += delta * speed
+            moveX += delta * rokcCurrentEnemySpeed;
         }
         else if (avatar.avatarBodyRef?.translation().x < currentPosition?.x ){ //- 4 - 4) {
-            moveX -= delta * speed;
-            moveR += delta * speed
-        }
+            moveX -= delta * rokcCurrentEnemySpeed;
+        };
 
-        // if (avatar.avatarBodyRef?.translation().z == currentPosition?.z) {
-        //     moveZ = moveZ;
-        // }
-        // else
         if (avatar.avatarBodyRef?.translation().z > currentPosition?.z + 24.5) {//+ 13 + 4) {
-            moveZ += delta * speed;
-            moveR += delta * speed
+            moveZ += delta * rokcCurrentEnemySpeed;
         }
         else if (avatar.avatarBodyRef?.translation().z < currentPosition?.z + 25.5){ //+ 13 + 4) {
-            moveZ -= delta * speed;
-            moveR += delta * speed
-        }
+            moveZ -= delta * rokcCurrentEnemySpeed;
+        };
 
-        redManQuadBodyRef.current?.setTranslation({
+        RockEnemydRefBodyRef.current?.setTranslation({
             x:  moveX,
-            y:  redManQuadBodyRef.current?.translation().y,
-            z:  moveZ //redManQuadBodyRef.current?.translation().z
-        }, true)
+            y:  RockEnemydRefBodyRef.current?.translation().y,
+            z:  moveZ
+        }, true);
 
-        const angle = Math.atan2(avatar.avatarBodyRef?.translation().x - currentPosition?.x, avatar.avatarBodyRef?.translation().z - 24.5 - currentPosition?.z)-Math.PI //- Math.PI;
+        const angle = Math.atan2(avatar.avatarBodyRef?.translation().x - currentPosition?.x, avatar.avatarBodyRef?.translation().z - 24.5 - currentPosition?.z)-Math.PI;
 
-        let xd = angle
-        redManQuadRef.current.rotation.y = xd;
-        redManQuadRef.current.position.x = (currentPosition?.x * 0.01) - (Math.sin(xd))*49;
-        // redManQuadRef.current.position.x = (Math.sin(xd))*49;
-        redManQuadRef.current.position.z = (currentPosition?.z * 0.01) + (1 - Math.cos(xd))*49;
-        // redManQuadRef.current.position.z = (1 - Math.cos(xd))*49;
+        let xd = angle;
+        RockEnemydRef.current.rotation.y = xd;
+        RockEnemydRef.current.position.x = (currentPosition?.x * 0.01) - (Math.sin(xd))*49;
+        RockEnemydRef.current.position.z = (currentPosition?.z * 0.01) + (1 - Math.cos(xd))*49;
 
+        // // // // // if (wasAtacked) {
+        // // // // //     // rojizo = null;
+        // // // // //     wasAtacked = false;
+        // // // // // };
 
+        enemyCloud.current.position.x = moveX; //RockEnemydRefBodyRef.current.x;
+        // enemyCloud.current.position.y = 0;
+        enemyCloud.current.position.z = moveZ + 24.5; //RockEnemydRefBodyRef.current.z;
+    });
+    
+    const atacked = (e) => {
+    // const atacked = () => {
+        // // // // // console.log(rojizo);
+        // // // // // rojizo = 'red';
+        // // // // // wasAtacked = true;
 
-
-
-
-        // const angle = Math.atan2(avatar.avatarBodyRef?.translation().x - currentPosition?.x, avatar.avatarBodyRef?.translation().z - 24.5 - currentPosition?.z)-Math.PI //- Math.PI;
-        // // console.log("X>", avatar.avatarBodyRef?.translation().x, "-", currentPosition?.x)
-        // // console.log("Z>", avatar.avatarBodyRef?.translation().z -24.5, "-", currentPosition?.z)
-        // // console.log("angle>", angle)
-        // // console.log("redManQuadRef.current.rotation.y>", redManQuadRef.current.rotation.y)
-
-
-        // // redManQuadRef.current.position.x = currentPosition?.x - 5;
-        // // redManQuadRef.current.position.z = currentPosition?.z + 15;
-        // let xdd = redManQuadRef.current.rotation.y*(2/Math.PI)
-        // if (redManQuadRef.current.rotation.y < angle){
-        //     xdd += 0.01;
-        // } else if(redManQuadRef.current.rotation.y > angle) {
-        //     xdd -= 0.01;
+        // enemyCloud.current.material.opacity = 0;
+        // const materialN = enemyCloud.current.material;
+        // if (materialN){
+        //     materialN.opacity = 0;
         // }
-        // let xd = Math.PI*(xdd/2);
-        // // console.log("xd>", xd)
-        // // const xd = Math.PI*(0/2);
-        // // const xd = -0.75;
-        // if (angle < -Math.PI+0.1 || angle > -0.1){
-        //     xd = angle
-        // }
-        // redManQuadRef.current.rotation.y = xd;
-        // redManQuadRef.current.position.x = (currentPosition?.x * 0.01) - (Math.sin(xd))*49;
-        // // redManQuadRef.current.position.x = (Math.sin(xd))*49;
-        // redManQuadRef.current.position.z = (currentPosition?.z * 0.01) + (1 - Math.cos(xd))*49;
-        // // redManQuadRef.current.position.z = (1 - Math.cos(xd))*49;
 
-        // // redManQuadRef.current.position.x = (Math.sin(xd))*49;
-        // // redManQuadRef.current.position.z = (1 - Math.cos(xd))*49;
+        enemyCloud.current.visible = true;
+        setTimeout(() => {
+            enemyCloud.current.visible = false;
+        }, 5000);
+        e.stopPropagation();
+        console.log("atacked>");
+    };
 
-        // // console.log("cos:", Math.cos(xd), "- sen", Math.sin(xd))
-        // // console.log("x:", redManQuadBodyRef.current?.translation().x, "- z", redManQuadBodyRef.current?.translation().z)
-        // // redManQuadRef.current.position.x = 49;
-        // // redManQuadRef.current.position.z = 49;
-    })
+    // console.log("position.x, position.y, position.z>", position[0], position[1], position[2]);
 
     return (
-        <RigidBody
-        ref={redManQuadBodyRef}
-        // colliders={false}
-        type='fixed'
-        // type='dynamic'
-        colliders='cuboid'
-        // Este de abajo genera error
-        // friction={0}
-        scale={0.5}
-        // position={[-15, 0.3, -15]}
-        position={position}
-        // rotation={[0, Math.PI*(2), 0]}
-        >
+        <>
             <group
-                ref={redManQuadRef}
-                // {...props}
-                dispose={null}
-                // ref={redManQuadRef}
-                >
-                <mesh
-                // position={[-15, 0.3, -15]}
-                position={position}
-                castShadow
-                receiveShadow
-                geometry={nodes.Enemy.geometry}
-                material={materials['Scene_-_Root.003']}
+            ref={enemyCloud}
+            // position={[0, 0, 24.5]}
+            visible={false}
+            >
+                <Cloud
+                // ref={enemyCloud}
+                // position={position}
+                opacity={0.3}
+                speed={0.1}
+                // width={25}
+                // depth={25}
+                segments={20}
+                position-y={5}
                 />
-                {/* <CuboidCollider args={[10, 10, 10]} position={[0, 0, 0]} /> */}
-                {/* <CuboidCollider args={[10, 10, 10]} position={[0, 0.3, -15]} /> */}
-                {/* <CuboidCollider args={[2.5, 10, 3]} position={[0, 0.3, -15]} /> */}
             </group>
-        </RigidBody>
-    )
-}
 
-useGLTF.preload('assets/models/rockenemy/RockEnemy.glb')
+            <RigidBody
+            ref={RockEnemydRefBodyRef}
+            // type='fixed'
+            type='dynamic'
+            colliders='cuboid'
+            scale={0.5}
+            position={position}
+            >
+                <group
+                    ref={RockEnemydRef}
+                    dispose={null}
+                    >
+                    <mesh
+                    position={position}
+                    castShadow
+                    receiveShadow
+                    geometry={nodes.Enemy.geometry}
+                    material={materials['Scene_-_Root.003']}
+                    // material={materialModificado}
+                    onClick={atacked}
+                    />
+                </group>
+        </RigidBody>
+        </>
+    );
+};
+
+useGLTF.preload('assets/models/rockenemy/RockEnemy.glb');
