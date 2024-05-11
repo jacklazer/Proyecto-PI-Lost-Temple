@@ -21,6 +21,7 @@
     "r3f-perf": "^7.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-modal": "^3.16.1",
     "react-router-dom": "^6.23.0",
     "react-scripts": "^5.0.1",
     "socket.io": "^4.7.5",

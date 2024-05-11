@@ -17,6 +17,9 @@ import { socket } from "../../socket/socket-manager";
 // import Collectable from "./collectable/coin";
 import Collectable from "./collectable/Coin";
 import { useAvatar } from "../../context/AvatarContext";
+import Gate from "./world/Gate";
+
+import { useNavigate } from 'react-router-dom';
 
 const Level1 = () => {
     const map = useMovements();
@@ -35,6 +38,16 @@ const Level1 = () => {
 
     const {avatar, setAvatar} = useAvatar();
 
+    const navigate = useNavigate();
+
+    const goToLogin = () => {
+        navigate('/', {
+            state: {
+                firstTime: false
+            }
+        })
+    }
+
     return (
         <Suspense fallback={null}>
             <KeyboardControls map={map}>
@@ -50,20 +63,20 @@ const Level1 = () => {
                     <Lights />
 
                     <Physics
-                    // debug={true}
+                    debug={true}
                     >
                         <World />
+                        <Gate onWin={goToLogin}/>
 
                         <Hero />
                         
-                        {/* <RockEnemy position={[0, 0.3, 0]} /> */}
+                        <RockEnemy position={[0, 0.3, 0]} />
 
-                        {/* <Tesseract position={[-15, 0.5, -15]} />
-                        <Tesseract position={[15, 0.5, 15]} /> */}
-                        {/* <Collectables /> */}
-                        <Collectable position={[15, 0.5, 15]} onCollect={handleCollect} positionHero={avatar.avatarBodyRef?.translation()}/>
-                        <Collectable position={[17, 0.5, 15]} onCollect={handleCollect} positionHero={avatar.avatarBodyRef?.translation()}/>
-                        <Collectable position={[19, 0.5, 15]} onCollect={handleCollect} positionHero={avatar.avatarBodyRef?.translation()}/>
+                        {/* <Tesseract position={[0, 10, 0]} /> */}
+
+                        <Collectable position={[0, 1, 15]} onCollect={handleCollect} />
+                        <Collectable position={[0, 1, 17]} onCollect={handleCollect} />
+                        <Collectable position={[0, 1, 19]} onCollect={handleCollect} />
                     </Physics>
 
                     <WellcomeText position={[0, 50, 0]} />
