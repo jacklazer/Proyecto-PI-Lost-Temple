@@ -28,3 +28,13 @@ export function AvatarProvider({ children }) {
         </avatarContext.Provider>
     )
 }
+
+export var colectedCoins = 0;
+
+export function colectCoin() {
+    colectedCoins += 1;
+}
+
+export function getColectedCoins() {
+    return colectedCoins;
+}

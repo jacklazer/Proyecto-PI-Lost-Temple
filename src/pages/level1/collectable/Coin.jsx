@@ -2,7 +2,7 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { RigidBody } from '@react-three/rapier';
-import { useAvatar } from '../../../context/AvatarContext';
+import { useAvatar, colectCoin, getColectedCoins } from '../../../context/AvatarContext';
 
 const Collectable = ({ position, onCollect}) => {
   const group = useRef();
@@ -30,10 +30,12 @@ const Collectable = ({ position, onCollect}) => {
     if (distancia < 2) {
       // El personaje está lo suficientemente cerca para recoger el objeto
       if (group.current.visible){
-        onCollect();
+        // onCollect();
+        colectCoin();
       }
       // Eliminar el objeto coleccionable de la escena
       group.current.visible = false;
+      console.log("getColectedCoins()>", getColectedCoins())
     }
   };
 

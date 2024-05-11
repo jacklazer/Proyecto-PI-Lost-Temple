@@ -6,7 +6,8 @@ import { useAvatar } from "../../../context/AvatarContext";
 // import useMovements from "../../../utils/key-movements";
 import { useFrame } from "@react-three/fiber";
 
-
+    let rokcInitialEnemySpeed = 4;
+    let slowsPower = 3;
 
 export default function RockEnemy(
     // props
@@ -29,7 +30,7 @@ export default function RockEnemy(
     // // // // // let wasAtacked = false;
 
     const {avatar, setAvatar} = useAvatar();
-    const rokcInitialEnemySpeed = 4
+    // const rokcInitialEnemySpeed = 4
     
     useFrame((state, delta) => {
 
@@ -37,7 +38,7 @@ export default function RockEnemy(
 
         let slow = 0;
         if (enemyCloud.current.visible){
-            slow = 3;
+            slow = slowsPower;
         }
         const rokcCurrentEnemySpeed = rokcInitialEnemySpeed - slow;
 
@@ -98,7 +99,7 @@ export default function RockEnemy(
             enemyCloud.current.visible = false;
         }, 5000);
         e.stopPropagation();
-        console.log("atacked>");
+        // console.log("atacked>");
     };
 
     // console.log("position.x, position.y, position.z>", position[0], position[1], position[2]);
