@@ -30,11 +30,20 @@ export function AvatarProvider({ children }) {
 }
 
 export var colectedCoins = 0;
-
 export function colectCoin() {
     colectedCoins += 1;
 }
-
 export function getColectedCoins() {
     return colectedCoins;
+}
+
+export var colectedSmokeBomb = 0;
+export function colectSmokeBomb() {
+    colectedSmokeBomb += 1;
+}
+export function getColectedSmokeBomb() {
+    return colectedSmokeBomb;
+}
+export function throwSmokeBomb() {
+    colectedSmokeBomb -= 1;
 }

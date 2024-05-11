@@ -4,7 +4,7 @@ import { useFrame } from '@react-three/fiber';
 import { RigidBody } from '@react-three/rapier';
 import { useAvatar, colectCoin, getColectedCoins } from '../../../context/AvatarContext';
 
-const Collectable = ({ position, onCollect}) => {
+const Coin = ({ position, onCollect}) => {
   const group = useRef();
 
   const {avatar, setAvatar} = useAvatar();
@@ -35,7 +35,7 @@ const Collectable = ({ position, onCollect}) => {
       }
       // Eliminar el objeto coleccionable de la escena
       group.current.visible = false;
-      console.log("getColectedCoins()>", getColectedCoins())
+      // console.log("getColectedCoins()>", getColectedCoins())
     }
   };
 
@@ -66,4 +66,4 @@ const Collectable = ({ position, onCollect}) => {
   );
 };
 
-export default Collectable;
+export default Coin;
