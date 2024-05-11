@@ -19,9 +19,14 @@ import { useAvatar } from "../../context/AvatarContext";
 import Gate from "./world/Gate";
 
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from "../../context/AuthContext";
 
 const Level1 = () => {
     const map = useMovements();
+
+    const auth = useAuth();
+    const { displayName, email } = auth.userLogged;
+    console.log(displayName, email);
 
     useEffect(()=>{
         socket.emit('player-connected')
@@ -46,6 +51,13 @@ const Level1 = () => {
             }
         })
     }
+
+    const [win, setWin] = useState(false);
+
+    const getWin = () => {
+        useState(true);
+    };
+
 
     return (
         <Suspense fallback={null}>
@@ -93,6 +105,9 @@ const Level1 = () => {
 
                     {/* <OrbitControls target={[0, 1, -2]} /> */}
                 </Canvas>
+                {win &&
+                    <GameOverScene reloadLevel='/level1'/>
+                }
             </KeyboardControls>
         </Suspense>
 
