@@ -21,6 +21,8 @@ import Gate from "./world/Gate";
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../../context/AuthContext";
 
+import { createUser, readUser } from "../../db/users-collections";
+
 const Level1 = () => {
     const map = useMovements();
 
@@ -33,6 +35,32 @@ const Level1 = () => {
     }, [])
 
     const [collectedCount, setCollectedCount] = useState(0);
+    /**
+     * Save the user data in the DB.
+     * @param {*} valuesUser 
+     */
+    const saveDataUser = async (valuesUser) => {
+        const {success} = await readUser(valuesUser.email)
+        if (!success)
+            await createUser(valuesUser)
+    }
+    /**
+     * When userLogged is changed call saveDataUser to save the user in the DB.
+     * @see saveDataUser
+     */
+    useEffect(() => {
+        if (auth.userLogged) {
+            const { displayName, email } = auth.userLogged
+
+            saveDataUser({
+                displayName: displayName,
+                email: email,
+            })
+        }
+    }, [auth.userLogged])
+
+
+
 
     const handleCollect = () => {
       // Incrementar el contador de objetos recolectados
