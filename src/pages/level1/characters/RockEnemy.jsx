@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Cloud, useGLTF } from '@react-three/drei'
 import { RigidBody } from '@react-three/rapier';
 import { useRef } from "react";
-import { useAvatar } from "../../../context/AvatarContext";
+import { useAvatar, getColectedSmokeBomb, throwSmokeBomb } from "../../../context/AvatarContext";
 // import useMovements from "../../../utils/key-movements";
 import { useFrame } from "@react-three/fiber";
 
@@ -11,7 +11,7 @@ import { useFrame } from "@react-three/fiber";
 
 export default function RockEnemy(
     // props
-    {position}
+    { position, onCatch }
 
 ) {
     const { nodes, materials } = useGLTF('assets/models/rockenemy/RockEnemy.glb');
@@ -80,6 +80,15 @@ export default function RockEnemy(
         enemyCloud.current.position.x = moveX; //RockEnemydRefBodyRef.current.x;
         // enemyCloud.current.position.y = 0;
         enemyCloud.current.position.z = moveZ + 24.5; //RockEnemydRefBodyRef.current.z;
+    
+        const distancia = Math.sqrt(
+            Math.pow(avatar.avatarBodyRef?.translation().x - currentPosition?.x, 2) +
+            Math.pow(avatar.avatarBodyRef?.translation().z - currentPosition?.z - 24.5, 2)
+        );
+        if (distancia < 4) {
+            alert('Has muerto');
+            onCatch();
+        }
     });
     
     const atacked = (e) => {
@@ -94,12 +103,15 @@ export default function RockEnemy(
         //     materialN.opacity = 0;
         // }
 
-        enemyCloud.current.visible = true;
-        setTimeout(() => {
-            enemyCloud.current.visible = false;
-        }, 5000);
-        e.stopPropagation();
-        // console.log("atacked>");
+        if (getColectedSmokeBomb() > 0){
+            enemyCloud.current.visible = true;
+            setTimeout(() => {
+                enemyCloud.current.visible = false;
+            }, 5000);
+            e.stopPropagation();
+            // console.log("atacked>");
+            throwSmokeBomb();
+        }
     };
 
     // console.log("position.x, position.y, position.z>", position[0], position[1], position[2]);

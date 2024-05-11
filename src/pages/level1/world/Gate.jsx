@@ -58,7 +58,7 @@ export default function Gate(
                 alert('Aun faltan ' + numero_de_llaves.toString() + ' llaves');
 
             } else if (getColectedCoins() == 3) {
-                alert('Ganaste');
+                alert('Has abierto el porton');
                 onWin();
             }
             // // // // // // Emitir el evento de teclado en el elemento

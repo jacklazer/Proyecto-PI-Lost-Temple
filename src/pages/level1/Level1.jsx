@@ -13,9 +13,8 @@ import Controls from "./controls/Controls";
 import useMovements from "../../utils/key-movements";
 
 import { socket } from "../../socket/socket-manager";
-// import Collectables from "./collectable/collectable";
-// import Collectable from "./collectable/coin";
-import Collectable from "./collectable/Coin";
+import Coin from "./collectable/Coin";
+import SmokeBomb from "./collectable/SmokeBomb";
 import { useAvatar } from "../../context/AvatarContext";
 import Gate from "./world/Gate";
 
@@ -70,13 +69,22 @@ const Level1 = () => {
 
                         <Hero />
                         
-                        <RockEnemy position={[0, 0.3, 0]} />
+                        <RockEnemy position={[0, 0.3, 0]} onCatch={goToLogin} />
 
                         {/* <Tesseract position={[0, 10, 0]} /> */}
 
-                        <Collectable position={[0, 1, 15]} onCollect={handleCollect} />
-                        <Collectable position={[0, 1, 17]} onCollect={handleCollect} />
-                        <Collectable position={[0, 1, 19]} onCollect={handleCollect} />
+                        <Coin position={[0, 1, 15]} onCollect={handleCollect} />
+                        <Coin position={[0, 1, 17]} onCollect={handleCollect} />
+                        <Coin position={[30, 1, 30]} onCollect={handleCollect} />
+                        <Coin position={[30, 1, -30]} onCollect={handleCollect} />
+                        <Coin position={[-30, 1, 30]} onCollect={handleCollect} />
+
+
+                        <SmokeBomb position={[20, 1, 20]} onCollect={handleCollect} />
+                        <SmokeBomb position={[-20, 1, -20]} onCollect={handleCollect} />
+                        <SmokeBomb position={[-20, 1, 20]} onCollect={handleCollect} />
+                        <SmokeBomb position={[20, 1, -20]} onCollect={handleCollect} />
+
                     </Physics>
 
                     <WellcomeText position={[0, 50, 0]} />

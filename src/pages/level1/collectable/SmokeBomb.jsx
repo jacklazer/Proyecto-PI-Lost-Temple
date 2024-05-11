@@ -2,9 +2,9 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { RigidBody } from '@react-three/rapier';
-import { useAvatar, colectCoin, getColectedCoins } from '../../../context/AvatarContext';
+import { useAvatar, colectSmokeBomb} from '../../../context/AvatarContext';
 
-const Coin = ({ position, onCollect}) => {
+const SmokeBomb = ({ position, onCollect}) => {
   const group = useRef();
 
   const {avatar, setAvatar} = useAvatar();
@@ -31,7 +31,7 @@ const Coin = ({ position, onCollect}) => {
       // El personaje está lo suficientemente cerca para recoger el objeto
       if (group.current.visible){
         // onCollect();
-        colectCoin();
+        colectSmokeBomb();
       }
       // Eliminar el objeto coleccionable de la escena
       group.current.visible = false;
@@ -57,8 +57,8 @@ const Coin = ({ position, onCollect}) => {
           castShadow={true}
           receiveShadow={true}
           >
-              <torusGeometry/>
-              <meshStandardMaterial color="#FFD700" />
+              <sphereGeometry />
+              <meshStandardMaterial color="#964B00" />
           </mesh>
       </group>
     </RigidBody>
@@ -66,4 +66,4 @@ const Coin = ({ position, onCollect}) => {
   );
 };
 
-export default Coin;
+export default SmokeBomb;
