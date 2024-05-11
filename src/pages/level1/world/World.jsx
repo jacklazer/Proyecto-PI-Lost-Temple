@@ -38,7 +38,7 @@ export default function World(props) {
                     receiveShadow
                     geometry={nodes.WallsL1.geometry}
                     onClick={(e) => e.stopPropagation()}>
-                        {/* <meshStandardMaterial {...propsTextures} /> */}
+                        <meshStandardMaterial {...propsTextures} />
                     </mesh>
                 </RigidBody>
                 <RigidBody 
@@ -49,7 +49,7 @@ export default function World(props) {
                     receiveShadow
                     geometry={nodes.FloorL1.geometry}
                     onClick={(e) => e.stopPropagation()}>
-                        {/* <meshStandardMaterial {...propsTextures} /> */}
+                        <meshStandardMaterial {...propsTextures} />
                     </mesh>
                 </RigidBody>
             </group>
