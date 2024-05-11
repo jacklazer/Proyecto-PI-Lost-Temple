@@ -32,7 +32,7 @@ const Level1 = () => {
     const handleCollect = () => {
       // Incrementar el contador de objetos recolectados
       setCollectedCount(prevCount => prevCount + 1);
-      console.log("collectedCount>", collectedCount)
+    //   console.log("collectedCount>", collectedCount)
     };
 
     const {avatar, setAvatar} = useAvatar();
@@ -62,7 +62,7 @@ const Level1 = () => {
                     <Lights />
 
                     <Physics
-                    debug={true}
+                    // debug={true}
                     >
                         <World />
                         <Gate onWin={goToLogin}/>
