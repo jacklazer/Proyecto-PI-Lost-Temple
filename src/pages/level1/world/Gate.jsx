@@ -99,7 +99,7 @@ export default function Gate(
             // {...props}
             dispose={null}>
                 <group scale={0.01}>
-                    <group position={[0, 0, 10000]} rotation={[-Math.PI / 2, 0, Math.PI]} scale={100}>
+                    <group position={[0, 0, 9950]} rotation={[-Math.PI / 2, 0, Math.PI]} scale={100}>
                     <RigidBody
                     type='fixed'
                     // type='dynamic'

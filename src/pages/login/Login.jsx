@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./stylesLogin.css";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Login() {
 
@@ -13,6 +14,16 @@ export default function Login() {
         })
     }
 
+    const auth = useAuth();
+    const onHandleButtonLogin = async () => {
+        // const result = await auth.loginWithGoogle();
+        // console.log(result);
+
+        await auth.loginWithGoogle()
+        .then((res)=>navigate('/level1'))
+        .catch((error)=>console.error(error));
+    }
+
     return (
         <div className="container">
             <div className="logo-univalle">
@@ -21,7 +32,7 @@ export default function Login() {
             <div className="title-lost-temple">
                 Bienvenido a<br/>Lost Temple
             </div>
-            <div onClick={startLevel1} className="button-start">
+            <div onClick={onHandleButtonLogin} className="button-start">
                 <button>Level1</button>
             </div>
         </div>
