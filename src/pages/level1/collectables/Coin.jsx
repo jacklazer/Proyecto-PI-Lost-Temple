@@ -2,9 +2,9 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { RigidBody } from '@react-three/rapier';
-import { useAvatar, colectSmokeBomb} from '../../../context/AvatarContext';
+import { useAvatar, colectCoin, getColectedCoins } from '../../../context/AvatarContext';
 
-const SmokeBomb = ({ position, onCollect}) => {
+const Coin = ({ position, onCollect}) => {
   const group = useRef();
 
   const {avatar, setAvatar} = useAvatar();
@@ -30,8 +30,8 @@ const SmokeBomb = ({ position, onCollect}) => {
     if (distancia < 2) {
       // El personaje está lo suficientemente cerca para recoger el objeto
       if (group.current.visible){
-        // onCollect();
-        colectSmokeBomb();
+        onCollect();
+        colectCoin();
       }
       // Eliminar el objeto coleccionable de la escena
       group.current.visible = false;
@@ -57,8 +57,8 @@ const SmokeBomb = ({ position, onCollect}) => {
           castShadow={true}
           receiveShadow={true}
           >
-              <sphereGeometry />
-              <meshStandardMaterial color="#964B00" />
+              <torusGeometry/>
+              <meshStandardMaterial color="#FFD700" />
           </mesh>
       </group>
     </RigidBody>
@@ -66,4 +66,4 @@ const SmokeBomb = ({ position, onCollect}) => {
   );
 };
 
-export default SmokeBomb;
+export default Coin;

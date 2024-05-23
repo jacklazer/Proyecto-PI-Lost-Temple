@@ -24,7 +24,7 @@ import { useAuth } from "../../context/AuthContext";
 import { createUser, readUser } from "../../db/users-collections";
 import OnWin from "../onWinOrLost/OnWin";
 
-const Level1 = () => {
+const Level2 = () => {
     const map = useMovements();
 
     const auth = useAuth();
@@ -65,7 +65,7 @@ const Level1 = () => {
 
 
 
-    const collectCoinLevel1 = () => {
+    const collectCoinLevel2 = () => {
       // Incrementar el contador de objetos recolectados
       setCollectedCount(prevCount => prevCount + 1);
     //   console.log("collectedCount>", collectedCount)
@@ -78,7 +78,7 @@ const Level1 = () => {
     const goTo = () => {
         setLevelFinished(true);
 
-        navigate('/login', {
+        navigate('/Level2', {
             state: {
                 firstTime: false
             }
@@ -110,20 +110,19 @@ const Level1 = () => {
                     // debug={true}
                     >
                         <World />
-                        {/* <Gate onWin={goTo}/> */}
-                        <Gate onWin={getWin}/>
+                        <Gate onWin={goTo}/>
 
                         {!win && <Hero /> }
                         
-                        {/* <RockEnemy position={[0, 0.3, 0]} onCatch={goTo} /> */}
+                        <RockEnemy position={[0, 0.3, 0]} onCatch={goTo} />
 
                         {/* <Tesseract position={[0, 10, 0]} /> */}
 
-                        <Coin position={[0, 1, 15]} onCollect={collectCoinLevel1} />
-                        <Coin position={[0, 1, 17]} onCollect={collectCoinLevel1} />
-                        <Coin position={[30, 1, 30]} onCollect={collectCoinLevel1} />
-                        <Coin position={[30, 1, -30]} onCollect={collectCoinLevel1} />
-                        <Coin position={[-30, 1, 30]} onCollect={collectCoinLevel1} />
+                        <Coin position={[0, 1, 15]} onCollect={collectCoinLevel2} />
+                        <Coin position={[0, 1, 17]} onCollect={collectCoinLevel2} />
+                        <Coin position={[30, 1, 30]} onCollect={collectCoinLevel2} />
+                        <Coin position={[30, 1, -30]} onCollect={collectCoinLevel2} />
+                        <Coin position={[-30, 1, 30]} onCollect={collectCoinLevel2} />
 
 
                         <SmokeBomb position={[20, 1, 20]} />
@@ -139,11 +138,7 @@ const Level1 = () => {
 
                     {/* <OrbitControls target={[0, 1, -2]} /> */}
                 </Canvas>
-                {win && 
-                // <OnWin reloadLevel='/level1'/>
-                console.log("Vamooooos")
-                // navigate("/level2") 
-                }
+                {win && <OnWin reloadLevel='/Level2'/> }
             </KeyboardControls>
         </Suspense>
 
@@ -151,6 +146,6 @@ const Level1 = () => {
 
 }
 
-export default Level1;
+export default Level2;
 
 

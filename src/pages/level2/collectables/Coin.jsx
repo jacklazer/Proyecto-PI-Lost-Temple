@@ -30,7 +30,7 @@ const Coin = ({ position, onCollect}) => {
     if (distancia < 2) {
       // El personaje está lo suficientemente cerca para recoger el objeto
       if (group.current.visible){
-        // onCollect();
+        onCollect();
         colectCoin();
       }
       // Eliminar el objeto coleccionable de la escena

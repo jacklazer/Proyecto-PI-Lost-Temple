@@ -2,7 +2,7 @@
 import React from 'react';
 // import './GameOverScene.css';
 
-const GameOverScene = ({ ...props }) => {
+const OnWin = ({ ...props }) => {
 
   const mainMenu = props.mainMenu ? props.reloadLevel : '/'
 
@@ -10,7 +10,7 @@ const GameOverScene = ({ ...props }) => {
     <>
       <div className="complete-scene">
         <div className='container-fluid-game-over text-center my-auto'>
-          <h1 className='dead-title'> Has aberto el porton </h1>
+          <h1 className='dead-title'> Has abierto el porton </h1>
           <div className='spacer-4'></div>
           <h1 className='play-again-text'> ¿Jugar de nuevo? </h1>
           <div className='spacer-2'></div>
@@ -23,4 +23,4 @@ const GameOverScene = ({ ...props }) => {
   );
 };
 
-export default GameOverScene;
+export default OnWin;
