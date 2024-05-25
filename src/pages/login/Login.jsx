@@ -15,12 +15,20 @@ export default function Login() {
     }
 
     const auth = useAuth();
-    const onHandleButtonLogin = async () => {
+    const onHandleButtonLoginLevel1 = async () => {
         // const result = await auth.loginWithGoogle();
         // console.log(result);
 
         await auth.loginWithGoogle()
         .then((res)=>navigate('/level1'))
+        .catch((error)=>console.error(error));
+    }
+    const onHandleButtonLoginLevel2 = async () => {
+        // const result = await auth.loginWithGoogle();
+        // console.log(result);
+
+        await auth.loginWithGoogle()
+        .then((res)=>navigate('/level2'))
         .catch((error)=>console.error(error));
     }
 
@@ -32,8 +40,11 @@ export default function Login() {
             <div className="title-lost-temple">
                 Bienvenido a<br/>Lost Temple
             </div>
-            <div onClick={onHandleButtonLogin} className="button-start">
+            <div onClick={onHandleButtonLoginLevel1} className="button-start">
                 <button>Level1</button>
+            </div>
+            <div onClick={onHandleButtonLoginLevel2} className="button-start">
+                <button>Level2</button>
             </div>
         </div>
     );

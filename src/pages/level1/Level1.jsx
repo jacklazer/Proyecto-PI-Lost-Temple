@@ -75,10 +75,20 @@ const Level1 = () => {
 
     const navigate = useNavigate();
 
-    const goTo = () => {
+    const goToLogin = () => {
         setLevelFinished(true);
 
-        navigate('/login', {
+        navigate('/', {
+            state: {
+                firstTime: false
+            }
+        })
+    }
+
+    const goToLevel2 = () => {
+        setLevelFinished(true);
+
+        navigate('/level2', {
             state: {
                 firstTime: false
             }
@@ -110,12 +120,13 @@ const Level1 = () => {
                     // debug={true}
                     >
                         <World />
-                        {/* <Gate onWin={goTo}/> */}
-                        <Gate onWin={getWin}/>
+                        <Gate onWin={goToLevel2}/>
+                        {/* <Gate onWin={getWin}/> */}
 
-                        {!win && <Hero /> }
+                        {/* {!win && <Hero /> } */}
+                        <Hero />
                         
-                        {/* <RockEnemy position={[0, 0.3, 0]} onCatch={goTo} /> */}
+                        <RockEnemy position={[0, 0.3, 0]} onCatch={goToLogin} />
 
                         {/* <Tesseract position={[0, 10, 0]} /> */}
 

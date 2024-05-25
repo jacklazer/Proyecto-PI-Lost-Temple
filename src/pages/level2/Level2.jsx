@@ -5,7 +5,7 @@ import World from "./world/World";
 import Lights from "./ligthts/Lights";
 import Tesseract from "./characters/Tesseract";
 import Hero from "./characters/Hero";
-import RockEnemy from "./characters/RockEnemy";
+import SkeletonEnemy from "./characters/SkeletonEnemy";
 import WellcomeText from "./abstractions/WellcomeText";
 
 import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
@@ -22,7 +22,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../../context/AuthContext";
 
 import { createUser, readUser } from "../../db/users-collections";
-import OnWin from "../onWinOrLost/OnWin";
+
+import Platform from "./world/Platform";
+import PlayerInfortmation from "./abstractions/PlayerInformation";
 
 const Level2 = () => {
     const map = useMovements();
@@ -36,7 +38,9 @@ const Level2 = () => {
     }, [])
 
     const [levelFinished, setLevelFinished] = useState(false);
-    const [collectedCount, setCollectedCount] = useState(0);
+    const [collectedCoins, setCollectedCoins] = useState(0);
+    const [collectedBombs, setCollectedBombs] = useState(0);
+
     /**
      * Save the user data in the DB.
      * @param {*} valuesUser 
@@ -57,7 +61,7 @@ const Level2 = () => {
             saveDataUser({
                 displayName: displayName,
                 email: email,
-                score: collectedCount.toString(),
+                score: collectedCoins.toString(),
             })
         }
     }, [auth.userLogged])
@@ -66,34 +70,51 @@ const Level2 = () => {
 
 
     const collectCoinLevel2 = () => {
-      // Incrementar el contador de objetos recolectados
-      setCollectedCount(prevCount => prevCount + 1);
-    //   console.log("collectedCount>", collectedCount)
+        // Incrementar el contador de objetos recolectados
+        setCollectedCoins(prevCount => prevCount + 1);
+    };
+
+    const collectBombLevel2 = () => {
+        // Incrementar el contador de objetos recolectados
+        setCollectedBombs(prevCount => prevCount + 1);
+    };
+
+    const throwBombLevel2 = () => {
+        // Incrementar el contador de objetos recolectados
+        setCollectedBombs(prevCount => prevCount - 1);
     };
 
     const {avatar, setAvatar} = useAvatar();
 
     const navigate = useNavigate();
 
-    const goTo = () => {
+    const goToLogin = () => {
         setLevelFinished(true);
 
-        navigate('/Level2', {
+        navigate('/', {
             state: {
                 firstTime: false
             }
         })
     }
 
-    const [win, setWin] = useState(false);
+    const goToLevel3 = () => {
+        setLevelFinished(true);
 
-    const getWin = () => {
-        setWin(true);
-    };
+        navigate('/level3', {
+            state: {
+                firstTime: false
+            }
+        })
+    }
+
+
 
 
     return (
         <Suspense fallback={null}>
+                
+            <PlayerInfortmation llaves_={collectedCoins} bombas_={collectedBombs}/>
             <KeyboardControls map={map}>
                 <Canvas 
                 // camera={
@@ -104,31 +125,39 @@ const Level2 = () => {
                 //     }
                 // } 
                 shadows={true}>
+
                     <Lights />
 
                     <Physics
                     // debug={true}
                     >
                         <World />
-                        <Gate onWin={goTo}/>
-
-                        {!win && <Hero /> }
+                        <Gate onWin={goToLogin}/>
                         
-                        <RockEnemy position={[0, 0.3, 0]} onCatch={goTo} />
+                        <Platform position={[40, 0, 40]}/>
+                        <Platform position={[40, 0, -40]}/>
+                        <Platform position={[-40, 0, 40]}/>
+                        <Platform position={[-40, 0, -40]}/>
+
+                        {/* {!win && <Hero /> } */}
+                        <Hero />
+                        
+                        <SkeletonEnemy position={[0, 0.3, 30]} onCatch={goToLogin} onGetShot={throwBombLevel2}/>
+                        {/* <SkeletonEnemy position={[30, 0.3, 30]} onCatch={goToLogin} onGetShot={throwBombLevel2}/> */}
 
                         {/* <Tesseract position={[0, 10, 0]} /> */}
 
-                        <Coin position={[0, 1, 15]} onCollect={collectCoinLevel2} />
-                        <Coin position={[0, 1, 17]} onCollect={collectCoinLevel2} />
-                        <Coin position={[30, 1, 30]} onCollect={collectCoinLevel2} />
-                        <Coin position={[30, 1, -30]} onCollect={collectCoinLevel2} />
-                        <Coin position={[-30, 1, 30]} onCollect={collectCoinLevel2} />
+                        <Coin position={[40, 15, 40]} onCollect={collectCoinLevel2} />
+                        <Coin position={[40, 15, -40]} onCollect={collectCoinLevel2} />
+                        <Coin position={[-40, 15, 40]} onCollect={collectCoinLevel2} />
+                        <Coin position={[-40, 15, -40]} onCollect={collectCoinLevel2} />
+                        <Coin position={[1, 1, 1]} onCollect={collectCoinLevel2} />
 
 
-                        <SmokeBomb position={[20, 1, 20]} />
-                        <SmokeBomb position={[-20, 1, -20]} />
-                        <SmokeBomb position={[-20, 1, 20]} />
-                        <SmokeBomb position={[20, 1, -20]} />
+                        <SmokeBomb position={[10, 1, 10]} onCollect={collectBombLevel2} />
+                        <SmokeBomb position={[-10, 1, -10]} onCollect={collectBombLevel2}/>
+                        <SmokeBomb position={[-10, 1, 10]} onCollect={collectBombLevel2}/>
+                        <SmokeBomb position={[10, 1, -10]} onCollect={collectBombLevel2}/>
 
                     </Physics>
 
@@ -138,7 +167,6 @@ const Level2 = () => {
 
                     {/* <OrbitControls target={[0, 1, -2]} /> */}
                 </Canvas>
-                {win && <OnWin reloadLevel='/Level2'/> }
             </KeyboardControls>
         </Suspense>
 

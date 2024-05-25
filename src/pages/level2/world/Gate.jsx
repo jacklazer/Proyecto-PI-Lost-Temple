@@ -53,11 +53,14 @@ export default function Gate(
             // // // // // elementoDOM.dispatchEvent(wwww);
             // // // // // elementoDOM.dispatchEvent(wwww);
 
-            if (getColectedCoins() < 3) {
-                const numero_de_llaves = 3 - getColectedCoins()
+            // if (getColectedCoins() < 3) {
+            if (getColectedCoins() < 1) {
+                // const numero_de_llaves = 3 - getColectedCoins()
+                const numero_de_llaves = 1 - getColectedCoins()
                 alert('Aun faltan ' + numero_de_llaves.toString() + ' llaves');
 
-            } else if (getColectedCoins() >= 3) {
+            // } else if (getColectedCoins() >= 3) {
+            } else if (getColectedCoins() >= 0) {
                 alert('Has abierto el porton');
                 onWin();
             }
