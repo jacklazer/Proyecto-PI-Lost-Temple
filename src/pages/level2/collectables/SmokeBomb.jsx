@@ -4,7 +4,7 @@ import { useFrame } from '@react-three/fiber';
 import { RigidBody } from '@react-three/rapier';
 import { useAvatar, colectSmokeBomb} from '../../../context/AvatarContext';
 
-const SmokeBomb = ({ position }) => {
+const SmokeBomb = ({ position, onCollect }) => {
   const group = useRef();
 
   const {avatar, setAvatar} = useAvatar();
@@ -30,6 +30,7 @@ const SmokeBomb = ({ position }) => {
     if (distancia < 2) {
       // El personaje está lo suficientemente cerca para recoger el objeto
       if (group.current.visible){
+        onCollect();
         colectSmokeBomb();
       }
       // Eliminar el objeto coleccionable de la escena
