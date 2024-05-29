@@ -6,9 +6,7 @@ import { useFrame } from '@react-three/fiber'
 
 let onGate = false;
 
-export default function Gate(
-    // props
-    { onWin }) {
+export default function Gate() {
     const { nodes, materials } = useGLTF('assets/models/world/GateOnePiece.glb')
 
     const {avatar, setAvatar} = useAvatar();
@@ -57,12 +55,12 @@ export default function Gate(
             if (getColectedCoins() < 1) {
                 // const numero_de_llaves = 3 - getColectedCoins()
                 const numero_de_llaves = 1 - getColectedCoins()
-                alert('Aun faltan ' + numero_de_llaves.toString() + ' llaves');
+                // alert('Aun faltan ' + numero_de_llaves.toString() + ' llaves');
 
             // } else if (getColectedCoins() >= 3) {
-            } else if (getColectedCoins() >= 0) {
-                alert('Has abierto el porton');
-                onWin();
+            } else if (getColectedCoins() >= 1) {
+                // alert('Has abierto el porton');
+                goToLevel2();
             }
             // // // // // // Emitir el evento de teclado en el elemento
             // // // // // elementoDOM.dispatchEvent(espacio);
@@ -88,6 +86,10 @@ export default function Gate(
             onGate = false;
         }
     });
+
+    const goToLevel2 = () => {
+        navigate('/level2')
+    }
 
     return (
         // <RigidBody

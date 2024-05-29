@@ -144,11 +144,11 @@ export default function SkeletonEnemy(
         RockEnemydRef.current.position.x = - (Math.sin(xd))*1;
         RockEnemydRef.current.position.y = -(1 - Math.cos(xd))*2;
 
-        console.log("angle>>", angle)
-        console.log("RockEnemydRef.current.position.x>>", RockEnemydRef.current.position.x)
-        console.log("currentPosition?.x>>", currentPosition?.x)
-        console.log("RockEnemydRef.current.position.z>>", RockEnemydRef.current.position.z)
-        console.log("currentPosition?.z>>", currentPosition?.z)
+        // console.log("angle>>", angle)
+        // console.log("RockEnemydRef.current.position.x>>", RockEnemydRef.current.position.x)
+        // console.log("currentPosition?.x>>", currentPosition?.x)
+        // console.log("RockEnemydRef.current.position.z>>", RockEnemydRef.current.position.z)
+        // console.log("currentPosition?.z>>", currentPosition?.z)
 
 
 
