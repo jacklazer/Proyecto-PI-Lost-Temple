@@ -299,7 +299,7 @@ import { useFrame } from '@react-three/fiber';
 
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
 
-export default function Hero(props) {
+export default function Hero({ onWonOrLost }) {
 
     const avatarRef = useRef();
     const avatarBodyRef = useRef();
@@ -341,6 +341,8 @@ export default function Hero(props) {
     
     return (
 
+        <>
+        {/* { !onWonOrLost &&  */}
         <Ecctrl 
         ref={avatarBodyRef}
         // camInitDis= {-40}
@@ -372,9 +374,9 @@ export default function Hero(props) {
         friction={0}
         scale={8}
         colliders={false}> */}
-
+            {/* { !onWonOrLost &&  */}
             <group 
-            {...props} 
+            // {...props} 
             dispose={null}
             ref={avatarRef}
             position-y={-0.65}
@@ -405,10 +407,12 @@ export default function Hero(props) {
                 {/* <CapsuleCollider args={[0.5, 0.5]} position={[0, 1, 0]}/>  */}
                 {/* <CuboidCollider args={[0.4, 0.88, 0.4]} position={[0, -6.5, 0]}/>  */}
             </group>
+            {/* } */}
 
         {/* </RigidBody> */}
-
-        </Ecctrl>
+        </Ecctrl> 
+        {/* } */}
+        </>
 
     )
 }

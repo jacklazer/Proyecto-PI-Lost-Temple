@@ -25,6 +25,7 @@ import { createUser, readUser } from "../../db/users-collections";
 
 import Platform from "./world/Platform";
 import PlayerInfortmation from "./abstractions/PlayerInformation";
+import { count } from "firebase/firestore";
 
 const Level2 = () => {
     const map = useMovements();
@@ -55,15 +56,20 @@ const Level2 = () => {
      * @see saveDataUser
      */
     useEffect(() => {
-        if (auth.userLogged && levelFinished) {
-            const { displayName, email } = auth.userLogged
+        // if (collectedCoins > 0) {
+        //     console.log("levelFinished")
+            if (auth.userLogged) {
+                console.log("saveDataUser")
 
-            saveDataUser({
-                displayName: displayName,
-                email: email,
-                score: collectedCoins.toString(),
-            })
-        }
+                const { displayName, email } = auth.userLogged
+
+                saveDataUser({
+                    displayName: displayName,
+                    email: email,
+                    score: collectedCoins.toString(),
+                })
+            }
+        // }
     }, [auth.userLogged])
 
 
@@ -99,9 +105,10 @@ const Level2 = () => {
     }
 
     const goToLevel3 = () => {
-        setLevelFinished(true);
+        // setLevelFinished(true);
+        alert('Ir al siguiente nivel');
 
-        navigate('/level3', {
+        navigate('/level1', {
             state: {
                 firstTime: false
             }
@@ -113,8 +120,9 @@ const Level2 = () => {
 
     return (
         <Suspense fallback={null}>
-                
+            
             <PlayerInfortmation llaves_={collectedCoins} bombas_={collectedBombs}/>
+            {/* {!levelFinished &&  */}
             <KeyboardControls map={map}>
                 <Canvas 
                 // camera={
@@ -132,7 +140,7 @@ const Level2 = () => {
                     // debug={true}
                     >
                         <World />
-                        <Gate onWin={goToLogin}/>
+                        <Gate onWin={goToLevel3}/>
                         
                         <Platform position={[40, 0, 40]}/>
                         <Platform position={[40, 0, -40]}/>
@@ -140,34 +148,38 @@ const Level2 = () => {
                         <Platform position={[-40, 0, -40]}/>
 
                         {/* {!win && <Hero /> } */}
-                        <Hero />
+                        {/* <Hero /> */}
+                        <Hero onWonOrLost={levelFinished}/>
                         
                         <SkeletonEnemy position={[0, 0.3, 30]} onCatch={goToLogin} onGetShot={throwBombLevel2}/>
+                        {/* {levelFinished && <SkeletonEnemy position={[0, 0.3, 30]} onCatch={goToLogin} onGetShot={throwBombLevel2}/>} */}
                         {/* <SkeletonEnemy position={[30, 0.3, 30]} onCatch={goToLogin} onGetShot={throwBombLevel2}/> */}
 
                         {/* <Tesseract position={[0, 10, 0]} /> */}
 
-                        <Coin position={[40, 15, 40]} onCollect={collectCoinLevel2} />
-                        <Coin position={[40, 15, -40]} onCollect={collectCoinLevel2} />
-                        <Coin position={[-40, 15, 40]} onCollect={collectCoinLevel2} />
-                        <Coin position={[-40, 15, -40]} onCollect={collectCoinLevel2} />
-                        <Coin position={[1, 1, 1]} onCollect={collectCoinLevel2} />
+                        { !levelFinished && <Coin position={[40, 15, 40]} onCollect={collectCoinLevel2} /> }
+                        { !levelFinished && <Coin position={[40, 15, -40]} onCollect={collectCoinLevel2} /> }
+                        { !levelFinished && <Coin position={[-40, 15, 40]} onCollect={collectCoinLevel2} />}
+                        { !levelFinished && <Coin position={[-40, 15, -40]} onCollect={collectCoinLevel2} />}
+                        { !levelFinished && <Coin position={[1, 1, 1]} onCollect={collectCoinLevel2} />}
 
 
-                        <SmokeBomb position={[10, 1, 10]} onCollect={collectBombLevel2} />
-                        <SmokeBomb position={[-10, 1, -10]} onCollect={collectBombLevel2}/>
-                        <SmokeBomb position={[-10, 1, 10]} onCollect={collectBombLevel2}/>
-                        <SmokeBomb position={[10, 1, -10]} onCollect={collectBombLevel2}/>
+                        { !levelFinished && <SmokeBomb position={[10, 1, 10]} onCollect={collectBombLevel2} /> }
+                        { !levelFinished && <SmokeBomb position={[-10, 1, -10]} onCollect={collectBombLevel2}/>}
+                        { !levelFinished && <SmokeBomb position={[-10, 1, 10]} onCollect={collectBombLevel2}/>}
+                        { !levelFinished && <SmokeBomb position={[10, 1, -10]} onCollect={collectBombLevel2}/>}
 
                     </Physics>
 
+                    {/* {levelFinished && <WellcomeText position={[0, 50, 0]} />} */}
                     <WellcomeText position={[0, 50, 0]} />
 
                     <Controls />
 
                     {/* <OrbitControls target={[0, 1, -2]} /> */}
-                </Canvas>
-            </KeyboardControls>
+                </Canvas> 
+            </KeyboardControls> 
+            {/* } */}
         </Suspense>
 
     )

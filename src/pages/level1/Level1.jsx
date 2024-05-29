@@ -85,16 +85,6 @@ const Level1 = () => {
         })
     }
 
-    const goToLevel2 = () => {
-        setLevelFinished(true);
-
-        navigate('/level2', {
-            state: {
-                firstTime: false
-            }
-        })
-    }
-
     const [win, setWin] = useState(false);
 
     const getWin = () => {
@@ -120,7 +110,7 @@ const Level1 = () => {
                     // debug={true}
                     >
                         <World />
-                        <Gate onWin={goToLevel2}/>
+                        <Gate />
                         {/* <Gate onWin={getWin}/> */}
 
                         {/* {!win && <Hero /> } */}
@@ -150,11 +140,11 @@ const Level1 = () => {
 
                     {/* <OrbitControls target={[0, 1, -2]} /> */}
                 </Canvas>
-                {win && 
+                {/* {win && 
                 // <OnWin reloadLevel='/level1'/>
                 console.log("Vamooooos")
                 // navigate("/level2") 
-                }
+                } */}
             </KeyboardControls>
         </Suspense>
 
