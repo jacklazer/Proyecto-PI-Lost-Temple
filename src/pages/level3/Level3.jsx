@@ -137,7 +137,7 @@ const Level3 = () => {
                     <Lights />
 
                     <Physics
-                    debug={true}
+                    // debug={true}
                     >
                         <World />
                         <Gate onWin={goToLevel3}/>
@@ -146,7 +146,7 @@ const Level3 = () => {
                         {/* <Hero /> */}
                         <Hero onWonOrLost={levelFinished}/>
                         
-                        {/* <SkeletonEnemy position={[0, 3.5, 90]} onCatch={goToLogin} onGetShot={throwBombLevel2}/> */}
+                        <SkeletonEnemy position={[0, 3.5, 90]} onCatch={goToLogin} onGetShot={throwBombLevel2}/>
                         {/* {levelFinished && <SkeletonEnemy position={[0, 0.3, 30]} onCatch={goToLogin} onGetShot={throwBombLevel2}/>} */}
                         {/* <SkeletonEnemy position={[30, 0.3, 30]} onCatch={goToLogin} onGetShot={throwBombLevel2}/> */}
 
