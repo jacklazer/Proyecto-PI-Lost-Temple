@@ -131,6 +131,7 @@ const Level4 = () => {
     // // console.log(">>", players);
 
     const [onP, setOnP] = useState(false);
+    const [onP2, setOnP2] = useState(false);
 
     const changeOnP = () => {
         if (onP){
@@ -140,6 +141,8 @@ const Level4 = () => {
         }
         console.log("changeOnP>>")
     };
+
+    const peroLoMueve = true;
 
     return (
         <Suspense fallback={null}>
@@ -161,19 +164,33 @@ const Level4 = () => {
                         <Hero url = {players[0]?.urlAvatar} setOnP={changeOnP} onP={onP}/>
                         <Hero2 url = {players[1]?.urlAvatar}/>
 
-                        <Platform position={[5, 1, 3]} onP={onP}/>
-                        
-                        <CollisionDetector position={[5, 1, 0]} onCollision={changeOnP} onP={onP}/>
-                        
-                        {/* <SkeletonEnemy position={[0, 3.5, 90]} onCatch={goToLogin} onGetShot={throwBombLevel2}/>
+                        <CollisionDetector position={[0, 1, -30]} onCollisionX={setOnP2} onPX={onP2}/>
 
+                        <Platform position={[12, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[10, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[8, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[6, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[4, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[2, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={peroLoMueve}/>
+                        <Platform position={[0, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={peroLoMueve}/>
+                        <Platform position={[-2, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={peroLoMueve}/>
+                        <Platform position={[-4, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[-6, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[-8, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[-10, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[-12, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        
+                        <CollisionDetector position={[0, 1, 30]} onCollisionX={setOnP} onPX={onP}/>
+                        
+                        <SkeletonEnemy position={[0, 3.5, 90]} onCatch={goToLogin} onGetShot={throwBombLevel2}/>
+{/* 
                         <Platform position={[5, 1, 3]}/>
                         <Platform position={[5, 1, 3]}/>
                         <Platform position={[-5, 1, 0]}/>
                         <Platform position={[5, 1, 8]}/>
                         <Platform position={[-5, 1, 8]}/>
                         <Platform position={[-5, 1, 13]}/>
-                        <Platform position={[5, 1, 13]}/>
+                        <Platform position={[5, 1, 13]}/> */}
 
                         <Coin position={[5, 1, 0]} onCollect={collectCoinLevel2} />
                         <SmokeBomb position={[-5, 1, 0]} onCollect={collectBombLevel2}/>
@@ -196,7 +213,7 @@ const Level4 = () => {
                         <Coin position={[5, 1, 50]} onCollect={collectCoinLevel2} />
                         <SmokeBomb position={[-5, 1, 50]} onCollect={collectBombLevel2}/>
                         <Coin position={[5, 1, 60]} onCollect={collectCoinLevel2} />
-                        <SmokeBomb position={[-5, 1, 60]} onCollect={collectBombLevel2}/> */}
+                        <SmokeBomb position={[-5, 1, 60]} onCollect={collectBombLevel2}/>
 
                     </Physics>
 

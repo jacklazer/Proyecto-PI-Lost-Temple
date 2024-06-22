@@ -9,7 +9,7 @@ import { useGLTF } from "@react-three/drei";
 
 let direccion = 1;
 
-export default function Platform({ position, onP}) {
+export default function Platform({ position, onP, onP2, esUnaZunga}) {
 
     const { nodes, materials } = useGLTF('assets/models/world/Platform.glb')
 
@@ -18,24 +18,44 @@ export default function Platform({ position, onP}) {
     
     useFrame(() => {
 
-        if (onP){
+        if (esUnaZunga){
             const currentPosition = rigidBodyPlatformRef.current?.translation();
-    
             let moveY = currentPosition?.y;
-    
-            if (currentPosition?.y >= 0.5){
-                direccion = -1;
-            } else if (currentPosition?.y <= -5){
-                direccion = 1;
+
+            if (onP || onP2){
+        
+                if (currentPosition?.y > -5){
+
+                    direccion = -1;
+        
+                    moveY += 0.05*direccion;
+            
+                    rigidBodyPlatformRef.current?.setTranslation({
+                        x:  currentPosition.x,
+                        y:  moveY, // RockEnemydRefBodyRef.current?.translation().y,
+                        z:  currentPosition.z
+                    }, true);
+                }
+
+
             }
-    
-            moveY += 0.05*direccion;
-    
-            rigidBodyPlatformRef.current?.setTranslation({
-                x:  currentPosition.x,
-                y:  moveY, // RockEnemydRefBodyRef.current?.translation().y,
-                z:  currentPosition.z
-            }, true);
+
+            if (onP == false && onP2 == false) {
+                
+                if (currentPosition?.y < 1){
+
+                    direccion = 1;
+        
+                    moveY += 0.05*direccion;
+            
+                    rigidBodyPlatformRef.current?.setTranslation({
+                        x:  currentPosition.x,
+                        y:  moveY, // RockEnemydRefBodyRef.current?.translation().y,
+                        z:  currentPosition.z
+                    }, true);
+                }
+            }
+
         }
 
     });
