@@ -299,14 +299,16 @@ import { useFrame } from '@react-three/fiber';
 
 import Ecctrl, { EcctrlAnimation } from "ecctrl";
 
-export default function Hero({ onWonOrLost }) {
+// export default function Hero() {
+export default function Hero({ url, setOnP, onP}) {
 
     const avatarRef = useRef();
     const avatarBodyRef = useRef();
 
     const {avatar, setAvatar} = useAvatar();
 
-    const { nodes, materials, animations } = useGLTF('assets/models/hero/HeroAAA.glb')
+    // const { nodes, materials, animations } = useGLTF('assets/models/hero/HeroAAA.glb')
+    const { nodes, materials, animations } = useGLTF(url)
 
     const {actions} = useAnimations(animations, avatarRef)
 
@@ -335,9 +337,42 @@ export default function Hero({ onWonOrLost }) {
             avatarRef: avatarRef?.current,
             avatarBodyRef: avatarBodyRef?.current
         })
+
     }, [avatarRef?.current, avatarBodyRef?.current])
 
     // useHelper(avatarBodyRef)
+
+
+
+    
+
+
+    // useEffect(()=>{
+
+    //     const current = avatarBodyRef.current?.translation();
+    //     if (onP==false && 0 < current.x && current.x < 10 && 0 < current.z && current.z < 6){
+    //         setOnP();
+    //     }
+
+    //     if (onP && 0 > current.x || current.x < 10 || 0 > current.z || current.z > 6){
+    //         setOnP();
+    //     }
+        
+    //     console.log("current>>", current)
+
+    // }, [avatarRef?.current.translation(), avatarBodyRef?.current.translation()])
+    // // useFrame(()=>{
+
+    // //     const current = avatarBodyRef.current?.translation();
+    // //     if (onP==false && 0 < current.x && current.x < 10 && 0 < current.z && current.z < 6){
+    // //         setOnP();
+    // //     }
+
+        
+    // //     if (onP && 0 > current.x || current.x < 10 || 0 > current.z || current.z > 6){
+    // //         setOnP();
+    // //     }
+    // // })
     
     return (
 
@@ -356,7 +391,7 @@ export default function Hero({ onWonOrLost }) {
         // // animated = {false}
         // // scale={8}
         // fallingGravityScale={0}
-        position={[0, 10, 70]}
+        position={[10, 5, 70]}
         // // camInitDis = {20}
         // // camMinDis = {20}
         // // camMaxDis = {20}

@@ -6,8 +6,8 @@ import { useAvatar, getColectedSmokeBomb, throwSmokeBomb } from "../../../contex
 // import useMovements from "../../../utils/key-movements";
 import { useFrame } from "@react-three/fiber";
 
-let initialSkeletonEnemySpeed = 5;
-let slowsPower = 3;
+let initialSkeletonEnemySpeed = 0.3;
+let slowsPower = 0;
 
 export default function SkeletonEnemy(
     // props
@@ -36,13 +36,6 @@ export default function SkeletonEnemy(
 
         // // let moveX = currentPosition?.x;
         let moveZ = currentPosition?.z;
-        
-        // // if (avatar.avatarBodyRef?.translation().x > currentPosition?.x + 4){ //- 4 - 4) {
-        // //     moveX += delta * rokcCurrentEnemySpeed;
-        // // }
-        // // else if (avatar.avatarBodyRef?.translation().x < currentPosition?.x + 4){ //- 4 - 4) {
-        // //     moveX -= delta * rokcCurrentEnemySpeed;
-        // // };
 
         if (avatar.avatarBodyRef?.translation().z > currentPosition?.z - 5) {//+ 24.5) {//+ 13 + 4) {
             moveZ += delta * rokcCurrentEnemySpeed;
@@ -67,124 +60,6 @@ export default function SkeletonEnemy(
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //     // // // const angle = Math.atan2(avatar.avatarBodyRef?.translation().x - currentPosition?.x, avatar.avatarBodyRef?.translation().z - 24.5 - currentPosition?.z)-Math.PI;
-    //     // // const angle = Math.atan2(avatar.avatarBodyRef?.translation().x - currentPosition?.x + 4, avatar.avatarBodyRef?.translation().z - currentPosition?.z - 5) -Math.PI;
-
-    //     // // console.log("angle>>", angle)
-    //     // // RockEnemydRef.current.rotation.z = Math.PI*0; 
-    //     // RockEnemydRef.current.rotation.z = RockEnemydRef.current.rotation.z + 0.05;
-    //     // RockEnemydRef.current.position.x = -4.5;
-    //     // RockEnemydRef.current.position.y = -4;
-    //     // console.log("RockEnemydRef.current.position", RockEnemydRef.current.position)
-    //     // // RockEnemydRef.current.rotation.z = angle;
-    //     // // RockEnemydRef.current.position.x = currentPosition?.z + 20;
-    //     // // RockEnemydRef.current.position.z = currentPosition?.z ;
-    //     // // RockEnemydRef.current.position.x = (currentPosition?.x * 0.01) - (Math.sin(angle))*49;
-    //     // // RockEnemydRef.current.position.z = (currentPosition?.z * 0.01) + (1 - Math.cos(angle))*49;
-
-    //     // // // let xd = angle;
-    //     // // RockEnemydRef.current.rotation.y = xd;
-    //     // // RockEnemydRef.current.position.x = (currentPosition?.x * 0.01) - (Math.sin(xd))*49;
-    //     // // RockEnemydRef.current.position.z = (currentPosition?.z * 0.01) + (1 - Math.cos(xd))*49;
-
-
-
-    //     // const angle = Math.atan2(avatar.avatarBodyRef?.translation().x - currentPosition?.x, avatar.avatarBodyRef?.translation().z - 24.5 - currentPosition?.z)-Math.PI;
-    //     const angle = Math.atan2(avatar.avatarBodyRef?.translation().x - currentPosition?.x, avatar.avatarBodyRef?.translation().z + 5 - currentPosition?.z)-Math.PI;
-
-    //     let xd = angle;
-    //     RockEnemydRef.current.rotation.z = xd;
-    //     // // RockEnemydRef.current.position.x = (currentPosition?.x * 0.01) - (Math.sin(xd))*49;
-    //     // // RockEnemydRef.current.position.z = (currentPosition?.z * 0.01) + (1 - Math.cos(xd))*49;
-    //     RockEnemydRef.current.position.x = - (Math.sin(xd))*1;
-    //     RockEnemydRef.current.position.y = -(1 - Math.cos(xd))*2;
-
-    //     // console.log("angle>>", angle)
-    //     // console.log("RockEnemydRef.current.position.x>>", RockEnemydRef.current.position.x)
-    //     // console.log("currentPosition?.x>>", currentPosition?.x)
-    //     // console.log("RockEnemydRef.current.position.z>>", RockEnemydRef.current.position.z)
-    //     // console.log("currentPosition?.z>>", currentPosition?.z)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // enemyCloud.current.position.x = moveX ;
-        // enemyCloud.current.position.y = -2;
         enemyCloud.current.position.z = moveZ - 5;
     
 
@@ -204,7 +79,7 @@ export default function SkeletonEnemy(
         const distancia = Math.abs(avatar.avatarBodyRef?.translation().z - currentPosition?.z);
         if (distancia < 10) {
             // console.log("distancia>>", distancia)
-            alert('Has muerto');
+            alert('Han perdido');
             onCatch();
         }
 
@@ -258,7 +133,7 @@ export default function SkeletonEnemy(
                 type='fixed'
                 // type='dynamic'
                 colliders='cuboid'
-                scale={0.5}
+                scale={0.3}
                 // position={position}
                 >
                 <group 

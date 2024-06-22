@@ -12,7 +12,7 @@ import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
 import Controls from "./controls/Controls";
 import useMovements from "../../utils/key-movements";
 
-import { socket } from "../../socket/socket-manager";
+import { disconnectSocket, socket } from "../../socket/socket-manager";
 import Coin from "./collectables/Coin";
 import SmokeBomb from "./collectables/SmokeBomb";
 import { useAvatar } from "../../context/AvatarContext";
@@ -26,17 +26,29 @@ import { createUser, readUser } from "../../db/users-collections";
 import Platform from "./world/Platform";
 import PlayerInfortmation from "./abstractions/PlayerInformation";
 import { count } from "firebase/firestore";
+import { useAtom } from "jotai";
+import { Players, playersAtom } from "../../components/Players";
+import Hero2 from "./characters/Hero2";
+import CollisionDetector from "./abstractions/CollisionDetector";
 
-const Level3 = () => {
+const Level4 = () => {
+    const [players] = useAtom(playersAtom);
+
     const map = useMovements();
 
     const auth = useAuth();
     const { displayName, email } = auth.userLogged;
-    console.log(displayName, email);
+    // console.log(displayName, email);
 
     useEffect(()=>{
         socket.emit('player-connected')
     }, [])
+
+    // useEffect(()=>{
+    //     return (
+    //         disconnectSocket()
+    //     )
+    // }, [])
 
     const [levelFinished, setLevelFinished] = useState(false);
     const [collectedCoins, setCollectedCoins] = useState(0);
@@ -115,81 +127,71 @@ const Level3 = () => {
         })
     }
 
+    // const [players] = useAtom(playersAtom);
+    // // console.log(">>", players);
 
+    const [onP, setOnP] = useState(false);
+    const [onP2, setOnP2] = useState(false);
 
+    const changeOnP = () => {
+        if (onP){
+            setOnP(false);
+        } else {
+            setOnP(true)
+        }
+        console.log("changeOnP>>")
+    };
+
+    const peroLoMueve = true;
 
     return (
         <Suspense fallback={null}>
-            
             <PlayerInfortmation llaves_={collectedCoins} bombas_={collectedBombs}/>
-            {/* {!levelFinished &&  */}
             <KeyboardControls map={map}>
+                <Players />
                 <Canvas 
-                // camera={
-                //     {
-                //         position: [100, 100, 100],
-                //         // target: [0, 50, 5]
-                //         // rotation: [-1, 1, 1]
-                //     }
-                // } 
                 shadows={true}>
 
                     <Lights />
 
                     <Physics
-                    // debug={true}
+                    debug={true}
                     >
                         <World />
                         <Gate onWin={goToLevel3}/>
 
-                        {/* {!win && <Hero /> } */}
                         {/* <Hero /> */}
-                        <Hero onWonOrLost={levelFinished}/>
+                        <Hero url = {players[0]?.urlAvatar} setOnP={changeOnP} onP={onP}/>
+                        <Hero2 url = {players[1]?.urlAvatar}/>
+
+                        <CollisionDetector position={[0, 1, -30]} onCollisionX={setOnP2} onPX={onP2}/>
+
+                        <Platform position={[12, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[10, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[8, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[6, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[4, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[2, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={peroLoMueve}/>
+                        <Platform position={[0, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={peroLoMueve}/>
+                        <Platform position={[-2, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={peroLoMueve}/>
+                        <Platform position={[-4, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[-6, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[-8, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[-10, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        <Platform position={[-12, 1, 3]} onP={onP} onP2={onP2} esUnaZunga={false}/>
+                        
+                        <CollisionDetector position={[0, 1, 30]} onCollisionX={setOnP} onPX={onP}/>
                         
                         <SkeletonEnemy position={[0, 3.5, 90]} onCatch={goToLogin} onGetShot={throwBombLevel2}/>
-                        {/* {levelFinished && <SkeletonEnemy position={[0, 0.3, 30]} onCatch={goToLogin} onGetShot={throwBombLevel2}/>} */}
-                        {/* <SkeletonEnemy position={[30, 0.3, 30]} onCatch={goToLogin} onGetShot={throwBombLevel2}/> */}
-
-                        {/* <Tesseract position={[0, 0, 0]} />
-                        <Tesseract position={[0, 0, -10]} />
-                        <Tesseract position={[0, 0, -20]} />
-                        <Tesseract position={[0, 0, -30]} />
-                        <Tesseract position={[0, 0, -40]} /> */}
+{/* 
                         <Platform position={[5, 1, 3]}/>
                         <Platform position={[5, 1, 3]}/>
                         <Platform position={[-5, 1, 0]}/>
                         <Platform position={[5, 1, 8]}/>
                         <Platform position={[-5, 1, 8]}/>
                         <Platform position={[-5, 1, 13]}/>
-                        <Platform position={[5, 1, 13]}/>
-                        {/* <Platform position={[-5, 1, 13]}/>
-                        <Platform position={[5, 1, 13]}/>
-                        <Platform position={[5, 1, 20]}/>
-                        <Platform position={[-5, 1, 20]}/>
-                        <Platform position={[5, 1, 25]}/>
-                        <Platform position={[-5, 1, 25]}/>
-                        <Platform position={[5, 1, 30]}/>
-                        <Platform position={[-5, 1, 30]}/>
-                        <Platform position={[5, 1, 35]}/>
-                        <Platform position={[-5, 1, 35]}/>
-                        <Platform position={[5, 1, 40]}/>
-                        <Platform position={[-5, 1, 40]}/>
-                        <Platform position={[5, 1, 50]}/>
-                        <Platform position={[-5, 1, 50]}/>
-                        <Platform position={[5, 1, 60]} />
-                        <Platform position={[-5, 1, 60]}/> */}
+                        <Platform position={[5, 1, 13]}/> */}
 
-                        {/* { !levelFinished && <Coin position={[40, 15, 40]} onCollect={collectCoinLevel2} /> }
-                        { !levelFinished && <Coin position={[40, 15, -40]} onCollect={collectCoinLevel2} /> }
-                        { !levelFinished && <Coin position={[-40, 15, 40]} onCollect={collectCoinLevel2} />}
-                        { !levelFinished && <Coin position={[-40, 15, -40]} onCollect={collectCoinLevel2} />}
-                        { !levelFinished && <Coin position={[1, 1, 1]} onCollect={collectCoinLevel2} />}
-
-
-                        { !levelFinished && <SmokeBomb position={[10, 1, 10]} onCollect={collectBombLevel2} /> }
-                        { !levelFinished && <SmokeBomb position={[-10, 1, -10]} onCollect={collectBombLevel2}/>}
-                        { !levelFinished && <SmokeBomb position={[-10, 1, 10]} onCollect={collectBombLevel2}/>}
-                        { !levelFinished && <SmokeBomb position={[10, 1, -10]} onCollect={collectBombLevel2}/>} */}
                         <Coin position={[5, 1, 0]} onCollect={collectCoinLevel2} />
                         <SmokeBomb position={[-5, 1, 0]} onCollect={collectBombLevel2}/>
                         <Coin position={[5, 1, 5]} onCollect={collectCoinLevel2} />
@@ -230,6 +232,6 @@ const Level3 = () => {
 
 }
 
-export default Level3;
+export default Level4;
 
 
