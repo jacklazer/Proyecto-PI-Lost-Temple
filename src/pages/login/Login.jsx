@@ -39,6 +39,14 @@ export default function Login() {
         .then((res)=>navigate('/level3'))
         .catch((error)=>console.error(error));
     }
+    const onHandleButtonLoginLevel4 = async () => {
+        // const result = await auth.loginWithGoogle();
+        // console.log(result);
+
+        await auth.loginWithGoogle()
+        .then((res)=>navigate('/level4'))
+        .catch((error)=>console.error(error));
+    }
 
     return (
         <div className="container">
@@ -56,6 +64,9 @@ export default function Login() {
             </div>
             <div onClick={onHandleButtonLoginLevel3} className="button-start">
                 <button>Level3</button>
+            </div>
+            <div onClick={onHandleButtonLoginLevel4} className="button-start">
+                <button>Level4</button>
             </div>
         </div>
     );
